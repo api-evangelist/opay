@@ -1,0 +1,479 @@
+openapi: 3.0.3
+info:
+  title: OPay Cashier API
+  version: '1.0'
+  description: |
+    The OPay Cashier API is the merchant payment API behind OPay Checkout. It
+    exposes a hosted Express Checkout endpoint plus server-to-server endpoints
+    for 3DS bank card, bank transfer, bank USSD, bank account, POS, OPay
+    wallet QR, and reference-code payments, with status query, cancel,
+    refund, and refund-status operations.
+
+    Authentication uses an `Authorization: Bearer <token>` header plus a
+    `MerchantId` header. For `cashier/create` the bearer token is the
+    merchant's public key. For all other endpoints the bearer token is an
+    HMAC-SHA512 signature computed over the JSON request body using the
+    merchant's private key.
+  contact:
+    name: OPay Merchant Support
+    url: https://support.opaycheckout.com/support/ticket
+  license:
+    name: OPay Merchant Terms
+    url: https://www.opayweb.com/terms-and-conditions
+servers:
+  - url: https://liveapi.opaycheckout.com/api/v1/international
+    description: Production
+  - url: https://testapi.opaycheckout.com/api/v1/international
+    description: Sandbox
+tags:
+  - name: Cashier
+    description: Hosted Express Checkout and order status.
+  - name: Payments
+    description: Server-to-server payment creation across payment methods.
+  - name: Refunds
+    description: Refund creation and status.
+paths:
+  /cashier/create:
+    post:
+      tags:
+        - Cashier
+      summary: Create Hosted Cashier Payment Order
+      description: |
+        Create a hosted Express Checkout order. Returns a `cashierUrl` that
+        the merchant redirects the customer to in order to complete payment
+        on an OPay-branded checkout page. Authenticate with the merchant's
+        public key as the bearer token.
+      operationId: createCashierPayment
+      security:
+        - PublicKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/MerchantIdHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CashierCreateRequest'
+      responses:
+        '200':
+          description: Cashier order created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CashierCreateResponse'
+  /cashier/status:
+    post:
+      tags:
+        - Cashier
+      summary: Query Payment Status
+      description: |
+        Query the status of a payment order by merchant reference or by OPay
+        orderNo. Authenticate with an HMAC-SHA512 signature of the JSON body
+        as the bearer token.
+      operationId: queryPaymentStatus
+      security:
+        - SignatureAuth: []
+      parameters:
+        - $ref: '#/components/parameters/MerchantIdHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentStatusRequest'
+      responses:
+        '200':
+          description: Order status returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentStatusResponse'
+  /payment/create:
+    post:
+      tags:
+        - Payments
+      summary: Create Server Payment
+      description: |
+        Server-to-server payment creation. The `payMethod` field selects the
+        payment method — `BankCard` (3DS), `BankTransfer`, `BankUSSD`,
+        `BankAccount`, `POS`, `OPay`, or `ReferenceCode`. The response
+        contains a `nextAction` describing what the merchant must do next
+        (redirect for 3DS, display a virtual transfer account, display a
+        USSD code, etc.). Authenticate with an HMAC-SHA512 signature of the
+        JSON body as the bearer token.
+      operationId: createPayment
+      security:
+        - SignatureAuth: []
+      parameters:
+        - $ref: '#/components/parameters/MerchantIdHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentCreateRequest'
+      responses:
+        '200':
+          description: Payment created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentCreateResponse'
+  /payment/refund:
+    post:
+      tags:
+        - Refunds
+      summary: Refund Payment
+      description: |
+        Refund a previously settled payment, in full or in part. Authenticate
+        with an HMAC-SHA512 signature of the JSON body as the bearer token.
+      operationId: refundPayment
+      security:
+        - SignatureAuth: []
+      parameters:
+        - $ref: '#/components/parameters/MerchantIdHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefundRequest'
+      responses:
+        '200':
+          description: Refund accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefundResponse'
+  /payment/refund/status:
+    post:
+      tags:
+        - Refunds
+      summary: Query Refund Status
+      description: |
+        Query the status of a refund by merchant refundReference or by OPay
+        refundOrderNo. Authenticate with an HMAC-SHA512 signature of the
+        JSON body as the bearer token.
+      operationId: queryRefundStatus
+      security:
+        - SignatureAuth: []
+      parameters:
+        - $ref: '#/components/parameters/MerchantIdHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefundStatusRequest'
+      responses:
+        '200':
+          description: Refund status returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefundStatusResponse'
+components:
+  securitySchemes:
+    PublicKeyAuth:
+      type: http
+      scheme: bearer
+      description: Bearer token = merchant public key (used for cashier/create).
+    SignatureAuth:
+      type: http
+      scheme: bearer
+      description: Bearer token = HMAC-SHA512 of the JSON request body signed with the merchant private key.
+  parameters:
+    MerchantIdHeader:
+      name: MerchantId
+      in: header
+      required: true
+      schema:
+        type: string
+      description: The merchant identifier issued by OPay (e.g. 256612345678901).
+  schemas:
+    Amount:
+      type: object
+      required: [total, currency]
+      properties:
+        total:
+          type: integer
+          format: int64
+          description: Amount in the smallest currency unit (e.g. kobo / cent).
+        currency:
+          type: string
+          description: ISO-4217 currency code.
+          example: NGN
+    Product:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    UserInfo:
+      type: object
+      properties:
+        userId:
+          type: string
+        userName:
+          type: string
+        userEmail:
+          type: string
+        userMobile:
+          type: string
+    BankCard:
+      type: object
+      properties:
+        cardHolderName:
+          type: string
+        cardNumber:
+          type: string
+        cvv:
+          type: string
+        expiryMonth:
+          type: string
+        expiryYear:
+          type: string
+        enable3DS:
+          type: boolean
+    NextAction:
+      type: object
+      description: Instructions for the next step required to complete the payment.
+      properties:
+        actionType:
+          type: string
+          enum:
+            - REDIRECT_3DS
+            - TRANSFER_ACCOUNT
+            - USSD
+            - QR_CODE
+            - REFERENCE_CODE
+        redirectUrl:
+          type: string
+        transferAccountNumber:
+          type: string
+        transferBankName:
+          type: string
+        expiredTimestamp:
+          type: integer
+          format: int64
+    PaymentStatus:
+      type: string
+      enum:
+        - INITIAL
+        - PENDING
+        - SUCCESS
+        - FAIL
+        - CLOSE
+    PayMethod:
+      type: string
+      enum:
+        - BankCard
+        - BankTransfer
+        - BankUSSD
+        - BankAccount
+        - POS
+        - OPay
+        - ReferenceCode
+    ApiEnvelope:
+      type: object
+      properties:
+        code:
+          type: string
+          example: '00000'
+        message:
+          type: string
+          example: SUCCESSFUL
+    CashierCreateRequest:
+      type: object
+      required: [reference, country, amount, returnUrl, product]
+      properties:
+        reference:
+          type: string
+          description: Unique merchant order reference.
+        country:
+          type: string
+          example: NG
+        amount:
+          $ref: '#/components/schemas/Amount'
+        returnUrl:
+          type: string
+        callbackUrl:
+          type: string
+        cancelUrl:
+          type: string
+        payMethod:
+          $ref: '#/components/schemas/PayMethod'
+        product:
+          $ref: '#/components/schemas/Product'
+        userInfo:
+          $ref: '#/components/schemas/UserInfo'
+        expireAt:
+          type: integer
+          description: Order expiry, in minutes (default 30).
+        displayName:
+          type: string
+        sn:
+          type: string
+        evokeOpay:
+          type: string
+        customerVisitSource:
+          type: string
+    CashierCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiEnvelope'
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                cashierUrl:
+                  type: string
+                orderNo:
+                  type: string
+                reference:
+                  type: string
+                status:
+                  $ref: '#/components/schemas/PaymentStatus'
+                amount:
+                  $ref: '#/components/schemas/Amount'
+                vat:
+                  $ref: '#/components/schemas/Amount'
+    PaymentStatusRequest:
+      type: object
+      properties:
+        reference:
+          type: string
+        orderNo:
+          type: string
+        country:
+          type: string
+          example: NG
+    PaymentStatusResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiEnvelope'
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                reference:
+                  type: string
+                orderNo:
+                  type: string
+                status:
+                  $ref: '#/components/schemas/PaymentStatus'
+                amount:
+                  $ref: '#/components/schemas/Amount'
+                createTime:
+                  type: integer
+                  format: int64
+    PaymentCreateRequest:
+      type: object
+      required: [reference, country, amount, payMethod, product]
+      properties:
+        reference:
+          type: string
+        country:
+          type: string
+          example: NG
+        amount:
+          $ref: '#/components/schemas/Amount'
+        payMethod:
+          $ref: '#/components/schemas/PayMethod'
+        product:
+          $ref: '#/components/schemas/Product'
+        callbackUrl:
+          type: string
+        returnUrl:
+          type: string
+        customerName:
+          type: string
+        userInfo:
+          $ref: '#/components/schemas/UserInfo'
+        userPhone:
+          type: string
+        bankcard:
+          $ref: '#/components/schemas/BankCard'
+    PaymentCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiEnvelope'
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                reference:
+                  type: string
+                orderNo:
+                  type: string
+                status:
+                  $ref: '#/components/schemas/PaymentStatus'
+                amount:
+                  $ref: '#/components/schemas/Amount'
+                nextAction:
+                  $ref: '#/components/schemas/NextAction'
+    RefundRequest:
+      type: object
+      required: [refundReference, country, amount]
+      properties:
+        refundReference:
+          type: string
+          description: Unique merchant refund reference.
+        orderNo:
+          type: string
+          description: OPay orderNo of the original payment.
+        reference:
+          type: string
+          description: Merchant reference of the original payment.
+        country:
+          type: string
+          example: NG
+        amount:
+          $ref: '#/components/schemas/Amount'
+        reason:
+          type: string
+    RefundResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiEnvelope'
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                refundOrderNo:
+                  type: string
+                refundReference:
+                  type: string
+                status:
+                  type: string
+                  enum: [PENDING, SUCCESS, FAIL]
+                amount:
+                  $ref: '#/components/schemas/Amount'
+    RefundStatusRequest:
+      type: object
+      properties:
+        refundReference:
+          type: string
+        refundOrderNo:
+          type: string
+        country:
+          type: string
+          example: NG
+    RefundStatusResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiEnvelope'
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                refundReference:
+                  type: string
+                refundOrderNo:
+                  type: string
+                status:
+                  type: string
+                  enum: [PENDING, SUCCESS, FAIL]
+                amount:
+                  $ref: '#/components/schemas/Amount'

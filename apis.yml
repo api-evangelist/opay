@@ -1,0 +1,249 @@
+aid: opay
+name: OPay
+description: >-
+  OPay is a Nigerian mobile money and fintech super-app operated by Blue Ridge
+  Microfinance Bank (OPay Digital Services Limited) and majority-owned by Opera
+  Limited with backing from SoftBank Vision Fund 2, Sequoia China, DragonBall
+  Capital, and 9F Group. Launched in 2018 and headquartered in Lagos, OPay
+  serves tens of millions of Nigerian consumers, merchants, and agents with
+  wallet accounts, free interbank transfers, the OPay Debit Card, OWealth
+  (daily-interest savings powered by OPay Microfinance Bank), bill payments,
+  airtime/data top-ups, BNPL (OBuy / OPay Easy Buy), and the OPay POS / agent
+  banking network. For developers and merchants, OPay exposes the OPay Cashier
+  / OPay Checkout API — a REST API for accepting payments via 3DS bank cards,
+  bank transfer, USSD, bank account, POS, OPay wallet QR, and reference codes,
+  with hosted Express Checkout, server-to-server APIs, callback webhooks,
+  refund and query operations, a PHP gateway SDK, and a WooCommerce plugin.
+  Sandbox and production environments are available at testapi.opaycheckout.com
+  and liveapi.opaycheckout.com, with HMAC-SHA512 signature authentication and
+  per-merchant public/private key pairs issued from the OPay merchant
+  dashboard.
+type: Index
+position: Provider
+access: 3rd-Party
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - Payments
+  - Mobile Money
+  - Fintech
+  - Super App
+  - Nigeria
+  - Africa
+  - Wallet
+  - Savings
+  - BNPL
+  - Bank Transfer
+  - Card Payments
+  - USSD
+  - Agent Banking
+  - POS
+  - Bill Payments
+  - Airtime
+  - Cashier
+  - Checkout
+  - Merchant Acquiring
+url: https://raw.githubusercontent.com/api-evangelist/opay/refs/heads/main/apis.yml
+created: '2026-05-24'
+modified: '2026-05-24'
+specificationVersion: '0.20'
+apis:
+  - aid: opay:opay-cashier-api
+    name: OPay Cashier API
+    description: >-
+      The OPay Cashier API is the primary merchant payment API behind OPay
+      Checkout. It exposes a hosted Express Checkout endpoint (cashier/create
+      returning a cashierUrl), server-to-server payment creation for 3DS bank
+      cards, bank transfer, bank USSD, bank account, POS, OPay wallet QR, and
+      reference code payments, plus status queries, cancel, refund, and
+      refund-status operations. Authentication uses an Authorization Bearer
+      token — the public key for cashier/create and an HMAC-SHA512 signature
+      over the JSON body (signed with the merchant's private key) for all
+      other endpoints — along with a MerchantId header.
+    humanURL: https://documentation.opaycheckout.com/
+    baseURL: https://liveapi.opaycheckout.com/api/v1/international
+    tags:
+      - Payments
+      - Cashier
+      - Checkout
+      - Cards
+      - Bank Transfer
+      - USSD
+      - Wallet
+      - Refunds
+    properties:
+      - type: Documentation
+        url: https://documentation.opaycheckout.com/
+      - type: GettingStarted
+        url: https://documentation.opaycheckout.com/getting-started
+      - type: Authentication
+        url: https://documentation.opaycheckout.com/payment-authentication
+      - type: APIReference
+        url: https://documentation.opaycheckout.com/server-apis-overview
+      - type: Webhooks
+        url: https://documentation.opaycheckout.com/payment-notifications
+      - type: Sandbox
+        url: https://testapi.opaycheckout.com/api/v1/international
+      - type: Production
+        url: https://liveapi.opaycheckout.com/api/v1/international
+      - type: Errors
+        url: https://documentation.opaycheckout.com/error-codes
+      - type: SignatureCalculator
+        url: https://documentation.opaycheckout.com/signature-calculator
+      - type: OpenAPI
+        url: openapi/opay-cashier-api-openapi.yml
+common:
+  - type: Website
+    url: https://www.opayweb.com/
+  - type: Portal
+    url: https://documentation.opaycheckout.com/
+  - type: Documentation
+    url: https://documentation.opaycheckout.com/
+  - type: GettingStarted
+    url: https://documentation.opaycheckout.com/getting-started
+  - type: APIReference
+    url: https://documentation.opaycheckout.com/server-apis-overview
+  - type: Authentication
+    url: https://documentation.opaycheckout.com/payment-authentication
+  - type: Webhooks
+    url: https://documentation.opaycheckout.com/payment-notifications
+  - type: Errors
+    url: https://documentation.opaycheckout.com/error-codes
+  - type: Sandbox
+    url: https://testapi.opaycheckout.com/api/v1/international
+  - type: SignUp
+    url: https://merchant.opaycheckout.com/register
+  - type: Console
+    url: https://merchant.opaycheckout.com/login
+  - type: Dashboard
+    url: https://merchant.opaycheckout.com/login
+  - type: Support
+    url: https://support.opaycheckout.com/support/ticket
+  - type: BusinessSolutions
+    url: https://opaybusiness.opayweb.com/
+  - type: GitHubOrganization
+    url: https://github.com/opay
+  - type: SDK
+    name: OPay PHP Gateway Library
+    url: https://github.com/opay/lib.gateway.php
+  - type: Plugin
+    name: WooCommerce Plugin
+    url: https://documentation.opaycheckout.com/woocommerce
+  - type: PrivacyPolicy
+    url: https://www.opayweb.com/privacy-policy
+  - type: TermsOfService
+    url: https://www.opayweb.com/terms-and-conditions
+  - type: Twitter
+    url: https://twitter.com/OPay_NG
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/opayinc/
+  - type: YouTube
+    url: https://www.youtube.com/@OPayNigeria
+  - type: Facebook
+    url: https://www.facebook.com/OPayNigeria/
+  - type: Instagram
+    url: https://www.instagram.com/opaynigeria/
+  - type: AppStore
+    url: https://apps.apple.com/ng/app/opay-mobile-money-app/id1500386156
+  - type: PlayStore
+    url: https://play.google.com/store/apps/details?id=team.opay.pay
+  - type: Features
+    data:
+      - name: Express Checkout
+        description: >-
+          Hosted, OPay-branded checkout page returned via cashier/create —
+          customers complete payment on OPay-managed UI and are redirected
+          back to the merchant returnUrl.
+      - name: 3DS Card Payments
+        description: >-
+          Direct server-to-server card acceptance with 3-D Secure step-up
+          (REDIRECT_3DS nextAction) for Nigerian and international card
+          schemes.
+      - name: Bank Transfer
+        description: >-
+          Generate a dynamic virtual account (transferAccountNumber +
+          transferBankName) per order; OPay reconciles inbound transfer and
+          settles the merchant.
+      - name: Bank USSD Payment
+        description: >-
+          Customer pays by dialling a *USSD* code on their mobile phone;
+          common in Nigeria where USSD banking is dominant.
+      - name: Bank Account Payment
+        description: Direct debit from the customer's bank account.
+      - name: POS Payment
+        description: Card-present payment from an OPay POS terminal.
+      - name: OPay Wallet QR Payment
+        description: Customer scans a QR code in the OPay app to pay from their wallet.
+      - name: Reference Code Payment
+        description: Customer pays at an OPay agent using a reference code.
+      - name: Refunds
+        description: Full or partial refunds with refund status query.
+      - name: Payment Status Query
+        description: Synchronous query for order status by merchant reference or OPay orderNo.
+      - name: Callback Webhooks
+        description: >-
+          Server-to-server callback notifications on terminal transaction
+          state changes (SUCCESS, FAIL, CLOSE), signed and retried by OPay.
+      - name: HMAC-SHA512 Signature Authentication
+        description: >-
+          All non-cashier-create endpoints authenticate via a SHA-512 HMAC
+          signature over the JSON body using the merchant's private key, plus
+          a MerchantId header.
+      - name: Sandbox Environment
+        description: testapi.opaycheckout.com sandbox with trigger-error-by-amount testing.
+      - name: WooCommerce Plugin
+        description: Drop-in WooCommerce plugin for WordPress storefronts.
+      - name: PHP Gateway SDK
+        description: Official open-source PHP gateway library at github.com/opay/lib.gateway.php.
+  - type: UseCases
+    data:
+      - name: Nigerian E-commerce Checkout
+        description: >-
+          Accept local payment methods (card, bank transfer, USSD, OPay wallet)
+          on Nigerian e-commerce sites via Express Checkout or server APIs.
+      - name: Cross-Border Online Merchants
+        description: Sell into Nigeria from international storefronts via OPay International APIs.
+      - name: Marketplace Payouts
+        description: Pay agents, riders, and sellers via OPay transfers.
+      - name: Bill Payment & Airtime Aggregation
+        description: Top up airtime/data and pay utility bills from within partner apps.
+      - name: Wallet Top-Up
+        description: Fund OPay wallets from cards or bank transfers.
+      - name: Buy-Now-Pay-Later Checkout
+        description: Offer BNPL via OBuy / OPay Easy Buy at checkout.
+      - name: Agent Banking & Cash-In/Cash-Out
+        description: Leverage the OPay agent network for cash deposits and withdrawals.
+      - name: POS Acceptance
+        description: Card-present acceptance via OPay POS terminals.
+  - type: Integrations
+    data:
+      - name: WooCommerce
+        description: Official OPay WooCommerce plugin for WordPress.
+      - name: Opera Browser
+        description: OPay was originally incubated inside Opera Limited and integrates with Opera browser payment flows.
+      - name: Visa
+        description: Card acquiring on the Visa network.
+      - name: Mastercard
+        description: Card acquiring on the Mastercard network.
+      - name: Verve
+        description: Card acquiring on the Nigerian Verve network.
+      - name: Nigerian Interbank Settlement System (NIBSS)
+        description: Bank transfer rails and USSD banking via NIBSS.
+      - name: Wema Bank
+        description: Partner bank for virtual-account bank-transfer settlement (referenced in API responses).
+  - type: Solutions
+    data:
+      - name: OPay Personal App
+        description: Consumer super-app for wallet, transfers, OWealth savings, debit card, bill pay.
+      - name: OPay Business
+        description: Merchant suite — Cashier API, POS terminals, agent banking, payouts.
+      - name: OWealth
+        description: Daily-interest savings powered by OPay Microfinance Bank Limited (CBN licensed, NDIC insured).
+      - name: OPay Debit Card
+        description: Instant-issuance debit card accepted on ATM, POS, and online.
+      - name: OBuy / OPay Easy Buy
+        description: Buy-now-pay-later product for OPay app users.
+      - name: OPay POS
+        description: POS terminal network for merchants and agents.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
