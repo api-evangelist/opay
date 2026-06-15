@@ -1,0 +1,159 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "OPay Cashier API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Cashier",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Hosted Cashier Payment Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://liveapi.opaycheckout.com/api/v1/international/cashier/create",
+            "headers": [
+              {
+                "name": "MerchantId",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a hosted Express Checkout order. Returns a `cashierUrl` that\nthe merchant redirects the customer to in order to complete payment\non an OPay-branded checkout page. Authenticate with the merchant's\npublic key as the bearer token.\n"
+        },
+        {
+          "info": {
+            "name": "Query Payment Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://liveapi.opaycheckout.com/api/v1/international/cashier/status",
+            "headers": [
+              {
+                "name": "MerchantId",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Query the status of a payment order by merchant reference or by OPay\norderNo. Authenticate with an HMAC-SHA512 signature of the JSON body\nas the bearer token.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Payments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Server Payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://liveapi.opaycheckout.com/api/v1/international/payment/create",
+            "headers": [
+              {
+                "name": "MerchantId",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Server-to-server payment creation. The `payMethod` field selects the\npayment method — `BankCard` (3DS), `BankTransfer`, `BankUSSD`,\n`BankAccount`, `POS`, `OPay`, or `ReferenceCode`. The response\ncontains a `nextAction` describing what the merchant must do next\n(redirect for 3DS, display a virtual transfer account, display a\nUSSD code, etc.). Authenticate with an HMAC-SHA512 signature of the\nJSON body as the bearer token.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Refunds",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Refund Payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://liveapi.opaycheckout.com/api/v1/international/payment/refund",
+            "headers": [
+              {
+                "name": "MerchantId",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Refund a previously settled payment, in full or in part. Authenticate\nwith an HMAC-SHA512 signature of the JSON body as the bearer token.\n"
+        },
+        {
+          "info": {
+            "name": "Query Refund Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://liveapi.opaycheckout.com/api/v1/international/payment/refund/status",
+            "headers": [
+              {
+                "name": "MerchantId",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Query the status of a refund by merchant refundReference or by OPay\nrefundOrderNo. Authenticate with an HMAC-SHA512 signature of the\nJSON body as the bearer token.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

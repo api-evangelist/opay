@@ -1,0 +1,661 @@
+{
+  "item": [
+    {
+      "id": "c438b83b-acc8-4ddc-9db5-b0b3062c07eb",
+      "name": "Cashier",
+      "description": {
+        "content": "Hosted Express Checkout and order status.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "28f46809-b291-4ad9-a907-c0925fe038f1",
+          "name": "Create Hosted Cashier Payment Order",
+          "request": {
+            "name": "Create Hosted Cashier Payment Order",
+            "description": {
+              "content": "Create a hosted Express Checkout order. Returns a `cashierUrl` that\nthe merchant redirects the customer to in order to complete payment\non an OPay-branded checkout page. Authenticate with the merchant's\npublic key as the bearer token.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "cashier",
+                "create"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) The merchant identifier issued by OPay (e.g. 256612345678901).",
+                "key": "MerchantId",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reference\": \"<string>\",\n  \"country\": \"<string>\",\n  \"amount\": {\n    \"total\": \"<long>\",\n    \"currency\": \"<string>\"\n  },\n  \"returnUrl\": \"<string>\",\n  \"product\": {\n    \"name\": \"<string>\",\n    \"description\": \"<string>\"\n  },\n  \"callbackUrl\": \"<string>\",\n  \"cancelUrl\": \"<string>\",\n  \"payMethod\": \"<string>\",\n  \"userInfo\": {\n    \"userId\": \"<string>\",\n    \"userName\": \"<string>\",\n    \"userEmail\": \"<string>\",\n    \"userMobile\": \"<string>\"\n  },\n  \"expireAt\": \"<integer>\",\n  \"displayName\": \"<string>\",\n  \"sn\": \"<string>\",\n  \"evokeOpay\": \"<string>\",\n  \"customerVisitSource\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6f041089-de38-4afe-8dfd-167064c468a1",
+              "name": "Cashier order created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cashier",
+                    "create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The merchant identifier issued by OPay (e.g. 256612345678901).",
+                    "key": "MerchantId",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reference\": \"<string>\",\n  \"country\": \"NG\",\n  \"amount\": {\n    \"total\": \"<long>\",\n    \"currency\": \"NGN\"\n  },\n  \"returnUrl\": \"<string>\",\n  \"product\": {\n    \"name\": \"<string>\",\n    \"description\": \"<string>\"\n  },\n  \"callbackUrl\": \"<string>\",\n  \"cancelUrl\": \"<string>\",\n  \"payMethod\": \"<string>\",\n  \"userInfo\": {\n    \"userId\": \"<string>\",\n    \"userName\": \"<string>\",\n    \"userEmail\": \"<string>\",\n    \"userMobile\": \"<string>\"\n  },\n  \"expireAt\": \"<integer>\",\n  \"displayName\": \"<string>\",\n  \"sn\": \"<string>\",\n  \"evokeOpay\": \"<string>\",\n  \"customerVisitSource\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"00000\",\n  \"message\": \"SUCCESSFUL\",\n  \"data\": {\n    \"cashierUrl\": \"string\",\n    \"orderNo\": \"string\",\n    \"reference\": \"string\",\n    \"status\": \"INITIAL\",\n    \"amount\": {\n      \"total\": \"<long>\",\n      \"currency\": \"NGN\"\n    },\n    \"vat\": {\n      \"total\": \"<long>\",\n      \"currency\": \"NGN\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6fc03b7c-07b4-4f39-9467-ada76a9c2fde",
+          "name": "Query Payment Status",
+          "request": {
+            "name": "Query Payment Status",
+            "description": {
+              "content": "Query the status of a payment order by merchant reference or by OPay\norderNo. Authenticate with an HMAC-SHA512 signature of the JSON body\nas the bearer token.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "cashier",
+                "status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) The merchant identifier issued by OPay (e.g. 256612345678901).",
+                "key": "MerchantId",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reference\": \"<string>\",\n  \"orderNo\": \"<string>\",\n  \"country\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b6d1087a-a63d-4ebf-9005-8a24fd967049",
+              "name": "Order status returned.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cashier",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The merchant identifier issued by OPay (e.g. 256612345678901).",
+                    "key": "MerchantId",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reference\": \"<string>\",\n  \"orderNo\": \"<string>\",\n  \"country\": \"NG\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"00000\",\n  \"message\": \"SUCCESSFUL\",\n  \"data\": {\n    \"reference\": \"string\",\n    \"orderNo\": \"string\",\n    \"status\": \"INITIAL\",\n    \"amount\": {\n      \"total\": \"<long>\",\n      \"currency\": \"NGN\"\n    },\n    \"createTime\": 2808\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "777bb0fe-4299-4e4f-9562-bda640c72424",
+      "name": "Payments",
+      "description": {
+        "content": "Server-to-server payment creation across payment methods.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c201ad44-dc9c-4bc8-8c59-865cb6c32084",
+          "name": "Create Server Payment",
+          "request": {
+            "name": "Create Server Payment",
+            "description": {
+              "content": "Server-to-server payment creation. The `payMethod` field selects the\npayment method — `BankCard` (3DS), `BankTransfer`, `BankUSSD`,\n`BankAccount`, `POS`, `OPay`, or `ReferenceCode`. The response\ncontains a `nextAction` describing what the merchant must do next\n(redirect for 3DS, display a virtual transfer account, display a\nUSSD code, etc.). Authenticate with an HMAC-SHA512 signature of the\nJSON body as the bearer token.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payment",
+                "create"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) The merchant identifier issued by OPay (e.g. 256612345678901).",
+                "key": "MerchantId",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reference\": \"<string>\",\n  \"country\": \"<string>\",\n  \"amount\": {\n    \"total\": \"<long>\",\n    \"currency\": \"<string>\"\n  },\n  \"payMethod\": \"<string>\",\n  \"product\": {\n    \"name\": \"<string>\",\n    \"description\": \"<string>\"\n  },\n  \"callbackUrl\": \"<string>\",\n  \"returnUrl\": \"<string>\",\n  \"customerName\": \"<string>\",\n  \"userInfo\": {\n    \"userId\": \"<string>\",\n    \"userName\": \"<string>\",\n    \"userEmail\": \"<string>\",\n    \"userMobile\": \"<string>\"\n  },\n  \"userPhone\": \"<string>\",\n  \"bankcard\": {\n    \"cardHolderName\": \"<string>\",\n    \"cardNumber\": \"<string>\",\n    \"cvv\": \"<string>\",\n    \"expiryMonth\": \"<string>\",\n    \"expiryYear\": \"<string>\",\n    \"enable3DS\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "66f7913d-3671-4f6a-a305-c28a1c8a05c3",
+              "name": "Payment created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payment",
+                    "create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The merchant identifier issued by OPay (e.g. 256612345678901).",
+                    "key": "MerchantId",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reference\": \"<string>\",\n  \"country\": \"NG\",\n  \"amount\": {\n    \"total\": \"<long>\",\n    \"currency\": \"NGN\"\n  },\n  \"payMethod\": \"<string>\",\n  \"product\": {\n    \"name\": \"<string>\",\n    \"description\": \"<string>\"\n  },\n  \"callbackUrl\": \"<string>\",\n  \"returnUrl\": \"<string>\",\n  \"customerName\": \"<string>\",\n  \"userInfo\": {\n    \"userId\": \"<string>\",\n    \"userName\": \"<string>\",\n    \"userEmail\": \"<string>\",\n    \"userMobile\": \"<string>\"\n  },\n  \"userPhone\": \"<string>\",\n  \"bankcard\": {\n    \"cardHolderName\": \"<string>\",\n    \"cardNumber\": \"<string>\",\n    \"cvv\": \"<string>\",\n    \"expiryMonth\": \"<string>\",\n    \"expiryYear\": \"<string>\",\n    \"enable3DS\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"00000\",\n  \"message\": \"SUCCESSFUL\",\n  \"data\": {\n    \"reference\": \"string\",\n    \"orderNo\": \"string\",\n    \"status\": \"PENDING\",\n    \"amount\": {\n      \"total\": \"<long>\",\n      \"currency\": \"NGN\"\n    },\n    \"nextAction\": {\n      \"actionType\": \"TRANSFER_ACCOUNT\",\n      \"redirectUrl\": \"string\",\n      \"transferAccountNumber\": \"string\",\n      \"transferBankName\": \"string\",\n      \"expiredTimestamp\": 8284\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "5eb7f0be-14ad-4503-8e92-2f695f9ab214",
+      "name": "Refunds",
+      "description": {
+        "content": "Refund creation and status.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fd314393-a6ec-46d1-86d0-1fda82559af9",
+          "name": "Refund Payment",
+          "request": {
+            "name": "Refund Payment",
+            "description": {
+              "content": "Refund a previously settled payment, in full or in part. Authenticate\nwith an HMAC-SHA512 signature of the JSON body as the bearer token.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payment",
+                "refund"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) The merchant identifier issued by OPay (e.g. 256612345678901).",
+                "key": "MerchantId",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refundReference\": \"<string>\",\n  \"country\": \"<string>\",\n  \"amount\": {\n    \"total\": \"<long>\",\n    \"currency\": \"<string>\"\n  },\n  \"orderNo\": \"<string>\",\n  \"reference\": \"<string>\",\n  \"reason\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ba428d5e-04b1-4e23-af4e-4c3959523881",
+              "name": "Refund accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payment",
+                    "refund"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The merchant identifier issued by OPay (e.g. 256612345678901).",
+                    "key": "MerchantId",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"refundReference\": \"<string>\",\n  \"country\": \"NG\",\n  \"amount\": {\n    \"total\": \"<long>\",\n    \"currency\": \"NGN\"\n  },\n  \"orderNo\": \"<string>\",\n  \"reference\": \"<string>\",\n  \"reason\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"00000\",\n  \"message\": \"SUCCESSFUL\",\n  \"data\": {\n    \"refundOrderNo\": \"string\",\n    \"refundReference\": \"string\",\n    \"status\": \"PENDING\",\n    \"amount\": {\n      \"total\": \"<long>\",\n      \"currency\": \"NGN\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "385f56a8-226e-4660-a0dd-3b33cb59bc3a",
+          "name": "Query Refund Status",
+          "request": {
+            "name": "Query Refund Status",
+            "description": {
+              "content": "Query the status of a refund by merchant refundReference or by OPay\nrefundOrderNo. Authenticate with an HMAC-SHA512 signature of the\nJSON body as the bearer token.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payment",
+                "refund",
+                "status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) The merchant identifier issued by OPay (e.g. 256612345678901).",
+                "key": "MerchantId",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refundReference\": \"<string>\",\n  \"refundOrderNo\": \"<string>\",\n  \"country\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "41598097-cfd4-4032-bdd7-e9c597ff99bd",
+              "name": "Refund status returned.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payment",
+                    "refund",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The merchant identifier issued by OPay (e.g. 256612345678901).",
+                    "key": "MerchantId",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"refundReference\": \"<string>\",\n  \"refundOrderNo\": \"<string>\",\n  \"country\": \"NG\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"00000\",\n  \"message\": \"SUCCESSFUL\",\n  \"data\": {\n    \"refundReference\": \"string\",\n    \"refundOrderNo\": \"string\",\n    \"status\": \"SUCCESS\",\n    \"amount\": {\n      \"total\": \"<long>\",\n      \"currency\": \"NGN\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://liveapi.opaycheckout.com/api/v1/international",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "119c2757-7409-44d2-97be-10a6a0abd6b8",
+    "name": "OPay Cashier API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The OPay Cashier API is the merchant payment API behind OPay Checkout. It\nexposes a hosted Express Checkout endpoint plus server-to-server endpoints\nfor 3DS bank card, bank transfer, bank USSD, bank account, POS, OPay\nwallet QR, and reference-code payments, with status query, cancel,\nrefund, and refund-status operations.\n\nAuthentication uses an `Authorization: Bearer <token>` header plus a\n`MerchantId` header. For `cashier/create` the bearer token is the\nmerchant's public key. For all other endpoints the bearer token is an\nHMAC-SHA512 signature computed over the JSON request body using the\nmerchant's private key.\n\n\nContact Support:\n Name: OPay Merchant Support",
+      "type": "text/plain"
+    }
+  }
+}
