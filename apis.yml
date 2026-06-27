@@ -85,7 +85,7 @@ apis:
         url: https://testapi.opaycheckout.com/api/v1/international
       - type: Production
         url: https://liveapi.opaycheckout.com/api/v1/international
-      - type: Errors
+      - type: ErrorCodes
         url: https://documentation.opaycheckout.com/error-codes
       - type: SignatureCalculator
         url: https://documentation.opaycheckout.com/signature-calculator
@@ -106,11 +106,11 @@ common:
     url: https://documentation.opaycheckout.com/payment-authentication
   - type: Webhooks
     url: https://documentation.opaycheckout.com/payment-notifications
-  - type: Errors
+  - type: ErrorCodes
     url: https://documentation.opaycheckout.com/error-codes
   - type: Sandbox
     url: https://testapi.opaycheckout.com/api/v1/international
-  - type: SignUp
+  - type: Signup
     url: https://merchant.opaycheckout.com/register
   - type: Console
     url: https://merchant.opaycheckout.com/login
@@ -122,7 +122,7 @@ common:
     url: https://opaybusiness.opayweb.com/
   - type: GitHubOrganization
     url: https://github.com/opay
-  - type: SDK
+  - type: SDKs
     name: OPay PHP Gateway Library
     url: https://github.com/opay/lib.gateway.php
   - type: Plugin
