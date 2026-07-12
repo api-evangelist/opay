@@ -1,0 +1,13 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/opay-cashier-api-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: PublicKeyAuth
+  type: http
+  scheme: bearer
+  description: Bearer token = merchant public key (used for cashier/create).
+  sources:
+  - openapi/opay-cashier-api-openapi.yml

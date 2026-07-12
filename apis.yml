@@ -92,6 +92,10 @@ apis:
       - type: OpenAPI
         url: openapi/opay-cashier-api-openapi.yml
 common:
+  - type: DomainSecurity
+    url: security/opay-domain-security.yml
+  - type: Authentication
+    url: authentication/opay-authentication.yml
   - type: Website
     url: https://www.opayweb.com/
   - type: Portal
