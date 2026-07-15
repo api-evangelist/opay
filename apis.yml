@@ -92,6 +92,8 @@ apis:
       - type: OpenAPI
         url: openapi/opay-cashier-api-openapi.yml
 common:
+  - type: AgenticAccess
+    url: agentic-access/opay-agentic-access.yml
   - type: DomainSecurity
     url: security/opay-domain-security.yml
   - type: Authentication
