@@ -1,0 +1,214 @@
+openapi: 3.0.3
+info:
+  title: OPay Cashier Refunds API
+  version: '1.0'
+  description: 'The OPay Cashier API is the merchant payment API behind OPay Checkout. It
+
+    exposes a hosted Express Checkout endpoint plus server-to-server endpoints
+
+    for 3DS bank card, bank transfer, bank USSD, bank account, POS, OPay
+
+    wallet QR, and reference-code payments, with status query, cancel,
+
+    refund, and refund-status operations.
+
+
+    Authentication uses an `Authorization: Bearer <token>` header plus a
+
+    `MerchantId` header. For `cashier/create` the bearer token is the
+
+    merchant''s public key. For all other endpoints the bearer token is an
+
+    HMAC-SHA512 signature computed over the JSON request body using the
+
+    merchant''s private key.
+
+    '
+  contact:
+    name: OPay Merchant Support
+    url: https://support.opaycheckout.com/support/ticket
+  license:
+    name: OPay Merchant Terms
+    url: https://www.opayweb.com/terms-and-conditions
+servers:
+- url: https://liveapi.opaycheckout.com/api/v1/international
+  description: Production
+- url: https://testapi.opaycheckout.com/api/v1/international
+  description: Sandbox
+tags:
+- name: Refunds
+  description: Refund creation and status.
+paths:
+  /payment/refund:
+    post:
+      tags:
+      - Refunds
+      summary: Refund Payment
+      description: 'Refund a previously settled payment, in full or in part. Authenticate
+
+        with an HMAC-SHA512 signature of the JSON body as the bearer token.
+
+        '
+      operationId: refundPayment
+      security:
+      - SignatureAuth: []
+      parameters:
+      - $ref: '#/components/parameters/MerchantIdHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefundRequest'
+      responses:
+        '200':
+          description: Refund accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefundResponse'
+  /payment/refund/status:
+    post:
+      tags:
+      - Refunds
+      summary: Query Refund Status
+      description: 'Query the status of a refund by merchant refundReference or by OPay
+
+        refundOrderNo. Authenticate with an HMAC-SHA512 signature of the
+
+        JSON body as the bearer token.
+
+        '
+      operationId: queryRefundStatus
+      security:
+      - SignatureAuth: []
+      parameters:
+      - $ref: '#/components/parameters/MerchantIdHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefundStatusRequest'
+      responses:
+        '200':
+          description: Refund status returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefundStatusResponse'
+components:
+  schemas:
+    RefundResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiEnvelope'
+      - type: object
+        properties:
+          data:
+            type: object
+            properties:
+              refundOrderNo:
+                type: string
+              refundReference:
+                type: string
+              status:
+                type: string
+                enum:
+                - PENDING
+                - SUCCESS
+                - FAIL
+              amount:
+                $ref: '#/components/schemas/Amount'
+    ApiEnvelope:
+      type: object
+      properties:
+        code:
+          type: string
+          example: '00000'
+        message:
+          type: string
+          example: SUCCESSFUL
+    Amount:
+      type: object
+      required:
+      - total
+      - currency
+      properties:
+        total:
+          type: integer
+          format: int64
+          description: Amount in the smallest currency unit (e.g. kobo / cent).
+        currency:
+          type: string
+          description: ISO-4217 currency code.
+          example: NGN
+    RefundStatusResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiEnvelope'
+      - type: object
+        properties:
+          data:
+            type: object
+            properties:
+              refundReference:
+                type: string
+              refundOrderNo:
+                type: string
+              status:
+                type: string
+                enum:
+                - PENDING
+                - SUCCESS
+                - FAIL
+              amount:
+                $ref: '#/components/schemas/Amount'
+    RefundRequest:
+      type: object
+      required:
+      - refundReference
+      - country
+      - amount
+      properties:
+        refundReference:
+          type: string
+          description: Unique merchant refund reference.
+        orderNo:
+          type: string
+          description: OPay orderNo of the original payment.
+        reference:
+          type: string
+          description: Merchant reference of the original payment.
+        country:
+          type: string
+          example: NG
+        amount:
+          $ref: '#/components/schemas/Amount'
+        reason:
+          type: string
+    RefundStatusRequest:
+      type: object
+      properties:
+        refundReference:
+          type: string
+        refundOrderNo:
+          type: string
+        country:
+          type: string
+          example: NG
+  parameters:
+    MerchantIdHeader:
+      name: MerchantId
+      in: header
+      required: true
+      schema:
+        type: string
+      description: The merchant identifier issued by OPay (e.g. 256612345678901).
+  securitySchemes:
+    PublicKeyAuth:
+      type: http
+      scheme: bearer
+      description: Bearer token = merchant public key (used for cashier/create).
+    SignatureAuth:
+      type: http
+      scheme: bearer
+      description: Bearer token = HMAC-SHA512 of the JSON request body signed with the merchant private key.

@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: OPay Cashier API
+  title: OPay Cashier Payments API
   version: '1.0'
   description: 'The OPay Cashier API is the merchant payment API behind OPay Checkout. It
 
@@ -36,54 +36,30 @@ servers:
 - url: https://testapi.opaycheckout.com/api/v1/international
   description: Sandbox
 tags:
-- name: Cashier
-  description: Hosted Express Checkout and order status.
+- name: Payments
+  description: Server-to-server payment creation across payment methods.
 paths:
-  /cashier/create:
+  /payment/create:
     post:
       tags:
-      - Cashier
-      summary: Create Hosted Cashier Payment Order
-      description: 'Create a hosted Express Checkout order. Returns a `cashierUrl` that
+      - Payments
+      summary: Create Server Payment
+      description: 'Server-to-server payment creation. The `payMethod` field selects the
 
-        the merchant redirects the customer to in order to complete payment
+        payment method — `BankCard` (3DS), `BankTransfer`, `BankUSSD`,
 
-        on an OPay-branded checkout page. Authenticate with the merchant''s
+        `BankAccount`, `POS`, `OPay`, or `ReferenceCode`. The response
 
-        public key as the bearer token.
+        contains a `nextAction` describing what the merchant must do next
 
-        '
-      operationId: createCashierPayment
-      security:
-      - PublicKeyAuth: []
-      parameters:
-      - $ref: '#/components/parameters/MerchantIdHeader'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CashierCreateRequest'
-      responses:
-        '200':
-          description: Cashier order created.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CashierCreateResponse'
-  /cashier/status:
-    post:
-      tags:
-      - Cashier
-      summary: Query Payment Status
-      description: 'Query the status of a payment order by merchant reference or by OPay
+        (redirect for 3DS, display a virtual transfer account, display a
 
-        orderNo. Authenticate with an HMAC-SHA512 signature of the JSON body
+        USSD code, etc.). Authenticate with an HMAC-SHA512 signature of the
 
-        as the bearer token.
+        JSON body as the bearer token.
 
         '
-      operationId: queryPaymentStatus
+      operationId: createPayment
       security:
       - SignatureAuth: []
       parameters:
@@ -93,25 +69,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PaymentStatusRequest'
+              $ref: '#/components/schemas/PaymentCreateRequest'
       responses:
         '200':
-          description: Order status returned.
+          description: Payment created.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaymentStatusResponse'
+                $ref: '#/components/schemas/PaymentCreateResponse'
 components:
   schemas:
-    ApiEnvelope:
-      type: object
-      properties:
-        code:
-          type: string
-          example: '00000'
-        message:
-          type: string
-          example: SUCCESSFUL
     Amount:
       type: object
       required:
@@ -126,46 +93,15 @@ components:
           type: string
           description: ISO-4217 currency code.
           example: NGN
-    CashierCreateRequest:
+    ApiEnvelope:
       type: object
-      required:
-      - reference
-      - country
-      - amount
-      - returnUrl
-      - product
       properties:
-        reference:
+        code:
           type: string
-          description: Unique merchant order reference.
-        country:
+          example: '00000'
+        message:
           type: string
-          example: NG
-        amount:
-          $ref: '#/components/schemas/Amount'
-        returnUrl:
-          type: string
-        callbackUrl:
-          type: string
-        cancelUrl:
-          type: string
-        payMethod:
-          $ref: '#/components/schemas/PayMethod'
-        product:
-          $ref: '#/components/schemas/Product'
-        userInfo:
-          $ref: '#/components/schemas/UserInfo'
-        expireAt:
-          type: integer
-          description: Order expiry, in minutes (default 30).
-        displayName:
-          type: string
-        sn:
-          type: string
-        evokeOpay:
-          type: string
-        customerVisitSource:
-          type: string
+          example: SUCCESSFUL
     PayMethod:
       type: string
       enum:
@@ -176,36 +112,43 @@ components:
       - POS
       - OPay
       - ReferenceCode
-    PaymentStatusResponse:
-      allOf:
-      - $ref: '#/components/schemas/ApiEnvelope'
-      - type: object
-        properties:
-          data:
-            type: object
-            properties:
-              reference:
-                type: string
-              orderNo:
-                type: string
-              status:
-                $ref: '#/components/schemas/PaymentStatus'
-              amount:
-                $ref: '#/components/schemas/Amount'
-              createTime:
-                type: integer
-                format: int64
-    PaymentStatusRequest:
+    BankCard:
       type: object
       properties:
-        reference:
+        cardHolderName:
           type: string
-        orderNo:
+        cardNumber:
           type: string
-        country:
+        cvv:
           type: string
-          example: NG
-    CashierCreateResponse:
+        expiryMonth:
+          type: string
+        expiryYear:
+          type: string
+        enable3DS:
+          type: boolean
+    NextAction:
+      type: object
+      description: Instructions for the next step required to complete the payment.
+      properties:
+        actionType:
+          type: string
+          enum:
+          - REDIRECT_3DS
+          - TRANSFER_ACCOUNT
+          - USSD
+          - QR_CODE
+          - REFERENCE_CODE
+        redirectUrl:
+          type: string
+        transferAccountNumber:
+          type: string
+        transferBankName:
+          type: string
+        expiredTimestamp:
+          type: integer
+          format: int64
+    PaymentCreateResponse:
       allOf:
       - $ref: '#/components/schemas/ApiEnvelope'
       - type: object
@@ -213,18 +156,16 @@ components:
           data:
             type: object
             properties:
-              cashierUrl:
+              reference:
                 type: string
               orderNo:
-                type: string
-              reference:
                 type: string
               status:
                 $ref: '#/components/schemas/PaymentStatus'
               amount:
                 $ref: '#/components/schemas/Amount'
-              vat:
-                $ref: '#/components/schemas/Amount'
+              nextAction:
+                $ref: '#/components/schemas/NextAction'
     Product:
       type: object
       properties:
@@ -232,6 +173,38 @@ components:
           type: string
         description:
           type: string
+    PaymentCreateRequest:
+      type: object
+      required:
+      - reference
+      - country
+      - amount
+      - payMethod
+      - product
+      properties:
+        reference:
+          type: string
+        country:
+          type: string
+          example: NG
+        amount:
+          $ref: '#/components/schemas/Amount'
+        payMethod:
+          $ref: '#/components/schemas/PayMethod'
+        product:
+          $ref: '#/components/schemas/Product'
+        callbackUrl:
+          type: string
+        returnUrl:
+          type: string
+        customerName:
+          type: string
+        userInfo:
+          $ref: '#/components/schemas/UserInfo'
+        userPhone:
+          type: string
+        bankcard:
+          $ref: '#/components/schemas/BankCard'
     PaymentStatus:
       type: string
       enum:
