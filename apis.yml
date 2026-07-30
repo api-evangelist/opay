@@ -19,9 +19,21 @@ description: >-
   per-merchant public/private key pairs issued from the OPay merchant
   dashboard.
 type: Index
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 position: Provider
 access: 3rd-Party
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/opay.png
 tags:
   - Payments
   - Mobile Money
@@ -47,50 +59,68 @@ created: '2026-05-24'
 modified: '2026-05-24'
 specificationVersion: '0.20'
 apis:
-  - aid: opay:opay-cashier-api
-    name: OPay Cashier API
-    description: >-
-      The OPay Cashier API is the primary merchant payment API behind OPay
-      Checkout. It exposes a hosted Express Checkout endpoint (cashier/create
-      returning a cashierUrl), server-to-server payment creation for 3DS bank
-      cards, bank transfer, bank USSD, bank account, POS, OPay wallet QR, and
-      reference code payments, plus status queries, cancel, refund, and
-      refund-status operations. Authentication uses an Authorization Bearer
-      token — the public key for cashier/create and an HMAC-SHA512 signature
-      over the JSON body (signed with the merchant's private key) for all
-      other endpoints — along with a MerchantId header.
-    humanURL: https://documentation.opaycheckout.com/
-    baseURL: https://liveapi.opaycheckout.com/api/v1/international
-    tags:
-      - Payments
-      - Cashier
-      - Checkout
-      - Cards
-      - Bank Transfer
-      - USSD
-      - Wallet
-      - Refunds
-    properties:
-      - type: Documentation
-        url: https://documentation.opaycheckout.com/
-      - type: GettingStarted
-        url: https://documentation.opaycheckout.com/getting-started
-      - type: Authentication
-        url: https://documentation.opaycheckout.com/payment-authentication
-      - type: APIReference
-        url: https://documentation.opaycheckout.com/server-apis-overview
-      - type: Webhooks
-        url: https://documentation.opaycheckout.com/payment-notifications
-      - type: Sandbox
-        url: https://testapi.opaycheckout.com/api/v1/international
-      - type: Production
-        url: https://liveapi.opaycheckout.com/api/v1/international
-      - type: ErrorCodes
-        url: https://documentation.opaycheckout.com/error-codes
-      - type: SignatureCalculator
-        url: https://documentation.opaycheckout.com/signature-calculator
-      - type: OpenAPI
-        url: openapi/opay-cashier-api-openapi.yml
+- aid: opay:opay-cashier-api
+  name: OPay Cashier API
+  description: >-
+    The OPay Cashier API is the primary merchant payment API behind OPay Checkout. It exposes a hosted
+    Express Checkout endpoint (cashier/create returning a cashierUrl), server-to-server payment creation
+    for 3DS bank cards, bank transfer, bank USSD, bank account, POS, OPay wallet QR, and reference code
+    payments, plus status queries, cancel, refund, and refund-status operations. Authentication uses an
+    Authorization Bearer token — the public key for cashier/create and an HMAC-SHA512 signature over the
+    JSON body (signed with the merchant's private key) for all other endpoints — along with a MerchantId
+    header.
+  humanURL: https://documentation.opaycheckout.com/
+  baseURL: https://liveapi.opaycheckout.com/api/v1/international
+  tags:
+  - Payments
+  - Cashier
+  - Checkout
+  - Cards
+  - Bank Transfer
+  - USSD
+  - Wallet
+  - Refunds
+  properties:
+  - type: Documentation
+    url: https://documentation.opaycheckout.com/
+  - type: GettingStarted
+    url: https://documentation.opaycheckout.com/getting-started
+  - type: Authentication
+    url: https://documentation.opaycheckout.com/payment-authentication
+  - type: APIReference
+    url: https://documentation.opaycheckout.com/server-apis-overview
+  - type: Webhooks
+    url: https://documentation.opaycheckout.com/payment-notifications
+  - type: Sandbox
+    url: https://testapi.opaycheckout.com/api/v1/international
+  - type: Production
+    url: https://liveapi.opaycheckout.com/api/v1/international
+  - type: ErrorCodes
+    url: https://documentation.opaycheckout.com/error-codes
+  - type: SignatureCalculator
+    url: https://documentation.opaycheckout.com/signature-calculator
+  - type: OpenAPI
+    url: openapi/opay-cashier-api-openapi.yml
+- aid: opay:opay-payments-api
+  name: OPay Payments API
+  description: Server-to-server payment creation across payment methods.
+  humanURL: https://documentation.opaycheckout.com/
+  baseURL: https://liveapi.opaycheckout.com/api/v1/international
+  tags:
+  - Payments
+  properties:
+  - type: OpenAPI
+    url: openapi/opay-payments-api-openapi.yml
+- aid: opay:opay-refunds-api
+  name: OPay Refunds API
+  description: Refund creation and status.
+  humanURL: https://documentation.opaycheckout.com/
+  baseURL: https://liveapi.opaycheckout.com/api/v1/international
+  tags:
+  - Refunds
+  properties:
+  - type: OpenAPI
+    url: openapi/opay-refunds-api-openapi.yml
 common:
   - type: AgenticAccess
     url: agentic-access/opay-agentic-access.yml
