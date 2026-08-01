@@ -1,0 +1,18 @@
+{
+  "provider": "opay",
+  "sources": [
+    "opay-cashier-api-openapi.yml",
+    "opay-payments-api-openapi.yml",
+    "opay-refunds-api-openapi.yml"
+  ],
+  "outputs": [
+    "opay-cashier-api-openapi.yml",
+    "opay-payments-api-openapi.yml",
+    "opay-refunds-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
