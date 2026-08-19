@@ -1,24 +1,24 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "OPay Cashier API",
+    "name": "OPay Cashier Refunds API",
     "version": "1.0"
   },
   "items": [
     {
       "info": {
-        "name": "Cashier",
+        "name": "Refunds",
         "type": "folder"
       },
       "items": [
         {
           "info": {
-            "name": "Create Hosted Cashier Payment Order",
+            "name": "Refund Payment",
             "type": "http"
           },
           "http": {
             "method": "POST",
-            "url": "https://liveapi.opaycheckout.com/api/v1/international/cashier/create",
+            "url": "https://liveapi.opaycheckout.com/api/v1/international/payment/refund",
             "headers": [
               {
                 "name": "MerchantId",
@@ -34,16 +34,16 @@
               "token": "{{bearerToken}}"
             }
           },
-          "docs": "Create a hosted Express Checkout order. Returns a `cashierUrl` that\nthe merchant redirects the customer to in order to complete payment\non an OPay-branded checkout page. Authenticate with the merchant's\npublic key as the bearer token.\n"
+          "docs": "Refund a previously settled payment, in full or in part. Authenticate\nwith an HMAC-SHA512 signature of the JSON body as the bearer token.\n"
         },
         {
           "info": {
-            "name": "Query Payment Status",
+            "name": "Query Refund Status",
             "type": "http"
           },
           "http": {
             "method": "POST",
-            "url": "https://liveapi.opaycheckout.com/api/v1/international/cashier/status",
+            "url": "https://liveapi.opaycheckout.com/api/v1/international/payment/refund/status",
             "headers": [
               {
                 "name": "MerchantId",
@@ -59,7 +59,7 @@
               "token": "{{bearerToken}}"
             }
           },
-          "docs": "Query the status of a payment order by merchant reference or by OPay\norderNo. Authenticate with an HMAC-SHA512 signature of the JSON body\nas the bearer token.\n"
+          "docs": "Query the status of a refund by merchant refundReference or by OPay\nrefundOrderNo. Authenticate with an HMAC-SHA512 signature of the\nJSON body as the bearer token.\n"
         }
       ]
     }

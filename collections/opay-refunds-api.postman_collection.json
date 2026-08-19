@@ -1,26 +1,26 @@
 {
   "item": [
     {
-      "id": "d3bf8191-6d1a-4370-b4b9-669ec1c12f68",
-      "name": "Cashier",
+      "id": "68c7d4a5-dd77-4216-8bc5-d98f57d3c118",
+      "name": "Refunds",
       "description": {
-        "content": "Hosted Express Checkout and order status.",
+        "content": "Refund creation and status.",
         "type": "text/plain"
       },
       "item": [
         {
-          "id": "84500215-0817-441d-985c-f2cbc6e466ca",
-          "name": "Create Hosted Cashier Payment Order",
+          "id": "30b59847-4255-4e02-b9b1-06782a7a7ba1",
+          "name": "Refund Payment",
           "request": {
-            "name": "Create Hosted Cashier Payment Order",
+            "name": "Refund Payment",
             "description": {
-              "content": "Create a hosted Express Checkout order. Returns a `cashierUrl` that\nthe merchant redirects the customer to in order to complete payment\non an OPay-branded checkout page. Authenticate with the merchant's\npublic key as the bearer token.\n",
+              "content": "Refund a previously settled payment, in full or in part. Authenticate\nwith an HMAC-SHA512 signature of the JSON body as the bearer token.\n",
               "type": "text/plain"
             },
             "url": {
               "path": [
-                "cashier",
-                "create"
+                "payment",
+                "refund"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -56,7 +56,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"reference\": \"<string>\",\n  \"country\": \"<string>\",\n  \"amount\": {\n    \"total\": \"<long>\",\n    \"currency\": \"<string>\"\n  },\n  \"returnUrl\": \"<string>\",\n  \"product\": {\n    \"name\": \"<string>\",\n    \"description\": \"<string>\"\n  },\n  \"callbackUrl\": \"<string>\",\n  \"cancelUrl\": \"<string>\",\n  \"payMethod\": \"<string>\",\n  \"userInfo\": {\n    \"userId\": \"<string>\",\n    \"userName\": \"<string>\",\n    \"userEmail\": \"<string>\",\n    \"userMobile\": \"<string>\"\n  },\n  \"expireAt\": \"<integer>\",\n  \"displayName\": \"<string>\",\n  \"sn\": \"<string>\",\n  \"evokeOpay\": \"<string>\",\n  \"customerVisitSource\": \"<string>\"\n}",
+              "raw": "{\n  \"refundReference\": \"<string>\",\n  \"country\": \"<string>\",\n  \"amount\": {\n    \"total\": \"<long>\",\n    \"currency\": \"<string>\"\n  },\n  \"orderNo\": \"<string>\",\n  \"reference\": \"<string>\",\n  \"reason\": \"<string>\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -66,13 +66,13 @@
           },
           "response": [
             {
-              "id": "b3fa1322-4082-4949-835b-4cd5f2d47d11",
-              "name": "Cashier order created.",
+              "id": "19db534c-847e-4b8f-ac89-a1bd5ff94fab",
+              "name": "Refund accepted.",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "cashier",
-                    "create"
+                    "payment",
+                    "refund"
                   ],
                   "host": [
                     "{{baseUrl}}"
@@ -103,7 +103,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"reference\": \"<string>\",\n  \"country\": \"NG\",\n  \"amount\": {\n    \"total\": \"<long>\",\n    \"currency\": \"NGN\"\n  },\n  \"returnUrl\": \"<string>\",\n  \"product\": {\n    \"name\": \"<string>\",\n    \"description\": \"<string>\"\n  },\n  \"callbackUrl\": \"<string>\",\n  \"cancelUrl\": \"<string>\",\n  \"payMethod\": \"<string>\",\n  \"userInfo\": {\n    \"userId\": \"<string>\",\n    \"userName\": \"<string>\",\n    \"userEmail\": \"<string>\",\n    \"userMobile\": \"<string>\"\n  },\n  \"expireAt\": \"<integer>\",\n  \"displayName\": \"<string>\",\n  \"sn\": \"<string>\",\n  \"evokeOpay\": \"<string>\",\n  \"customerVisitSource\": \"<string>\"\n}",
+                  "raw": "{\n  \"refundReference\": \"<string>\",\n  \"country\": \"NG\",\n  \"amount\": {\n    \"total\": \"<long>\",\n    \"currency\": \"NGN\"\n  },\n  \"orderNo\": \"<string>\",\n  \"reference\": \"<string>\",\n  \"reason\": \"<string>\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -119,7 +119,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"00000\",\n  \"message\": \"SUCCESSFUL\",\n  \"data\": {\n    \"cashierUrl\": \"string\",\n    \"orderNo\": \"string\",\n    \"reference\": \"string\",\n    \"status\": \"SUCCESS\",\n    \"amount\": {\n      \"total\": \"<long>\",\n      \"currency\": \"NGN\"\n    },\n    \"vat\": {\n      \"total\": \"<long>\",\n      \"currency\": \"NGN\"\n    }\n  }\n}",
+              "body": "{\n  \"code\": \"00000\",\n  \"message\": \"SUCCESSFUL\",\n  \"data\": {\n    \"refundOrderNo\": \"string\",\n    \"refundReference\": \"string\",\n    \"status\": \"SUCCESS\",\n    \"amount\": {\n      \"total\": \"<long>\",\n      \"currency\": \"NGN\"\n    }\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -130,17 +130,18 @@
           }
         },
         {
-          "id": "295fd1c5-e76e-424c-b999-72e2186b1b52",
-          "name": "Query Payment Status",
+          "id": "daf5b2c0-f710-432d-bdec-fc759a86de29",
+          "name": "Query Refund Status",
           "request": {
-            "name": "Query Payment Status",
+            "name": "Query Refund Status",
             "description": {
-              "content": "Query the status of a payment order by merchant reference or by OPay\norderNo. Authenticate with an HMAC-SHA512 signature of the JSON body\nas the bearer token.\n",
+              "content": "Query the status of a refund by merchant refundReference or by OPay\nrefundOrderNo. Authenticate with an HMAC-SHA512 signature of the\nJSON body as the bearer token.\n",
               "type": "text/plain"
             },
             "url": {
               "path": [
-                "cashier",
+                "payment",
+                "refund",
                 "status"
               ],
               "host": [
@@ -177,7 +178,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"reference\": \"<string>\",\n  \"orderNo\": \"<string>\",\n  \"country\": \"<string>\"\n}",
+              "raw": "{\n  \"refundReference\": \"<string>\",\n  \"refundOrderNo\": \"<string>\",\n  \"country\": \"<string>\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -187,12 +188,13 @@
           },
           "response": [
             {
-              "id": "b93c8c98-9a71-4762-ba2e-542e99535313",
-              "name": "Order status returned.",
+              "id": "0b87d31d-c4c7-4c16-950f-5b2655e4bdb9",
+              "name": "Refund status returned.",
               "originalRequest": {
                 "url": {
                   "path": [
-                    "cashier",
+                    "payment",
+                    "refund",
                     "status"
                   ],
                   "host": [
@@ -224,7 +226,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"reference\": \"<string>\",\n  \"orderNo\": \"<string>\",\n  \"country\": \"NG\"\n}",
+                  "raw": "{\n  \"refundReference\": \"<string>\",\n  \"refundOrderNo\": \"<string>\",\n  \"country\": \"NG\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -240,7 +242,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"code\": \"00000\",\n  \"message\": \"SUCCESSFUL\",\n  \"data\": {\n    \"reference\": \"string\",\n    \"orderNo\": \"string\",\n    \"status\": \"INITIAL\",\n    \"amount\": {\n      \"total\": \"<long>\",\n      \"currency\": \"NGN\"\n    },\n    \"createTime\": 5979\n  }\n}",
+              "body": "{\n  \"code\": \"00000\",\n  \"message\": \"SUCCESSFUL\",\n  \"data\": {\n    \"refundReference\": \"string\",\n    \"refundOrderNo\": \"string\",\n    \"status\": \"FAIL\",\n    \"amount\": {\n      \"total\": \"<long>\",\n      \"currency\": \"NGN\"\n    }\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             }
@@ -263,8 +265,8 @@
     }
   ],
   "info": {
-    "_postman_id": "1f481292-7a8e-4ae9-8b5e-10dd3f06fd95",
-    "name": "OPay Cashier API",
+    "_postman_id": "d300d2df-7143-4e53-af1f-ee0f61c54e7a",
+    "name": "OPay Cashier Refunds API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
       "content": "The OPay Cashier API is the merchant payment API behind OPay Checkout. It\nexposes a hosted Express Checkout endpoint plus server-to-server endpoints\nfor 3DS bank card, bank transfer, bank USSD, bank account, POS, OPay\nwallet QR, and reference-code payments, with status query, cancel,\nrefund, and refund-status operations.\n\nAuthentication uses an `Authorization: Bearer <token>` header plus a\n`MerchantId` header. For `cashier/create` the bearer token is the\nmerchant's public key. For all other endpoints the bearer token is an\nHMAC-SHA512 signature computed over the JSON request body using the\nmerchant's private key.\n\n\nContact Support:\n Name: OPay Merchant Support",
