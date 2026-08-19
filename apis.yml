@@ -57,7 +57,7 @@ tags:
 url: https://raw.githubusercontent.com/api-evangelist/opay/refs/heads/main/apis.yml
 created: '2026-05-24'
 modified: '2026-05-24'
-specificationVersion: '0.20'
+specificationVersion: '0.23'
 apis:
 - aid: opay:opay-cashier-api
   name: OPay Cashier API
