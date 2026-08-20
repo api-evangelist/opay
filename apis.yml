@@ -41,6 +41,26 @@ tags:
   - Super App
   - Nigeria
   - Africa
+  - Wallets
+  - Savings
+  - BNPL
+  - Bank Transfer
+  - Card Payments
+  - USSD
+  - Agent Banking
+  - Point-of-Sale
+  - Bill Payments
+  - Airtime
+  - Cashier
+  - Checkout
+  - Merchant Acquiring
+tags_raw:
+  - Payments
+  - Mobile Money
+  - Fintech
+  - Super App
+  - Nigeria
+  - Africa
   - Wallet
   - Savings
   - BNPL
@@ -72,6 +92,15 @@ apis:
   humanURL: https://documentation.opaycheckout.com/
   baseURL: https://liveapi.opaycheckout.com/api/v1/international
   tags:
+  - Payments
+  - Cashier
+  - Checkout
+  - Cards
+  - Bank Transfer
+  - USSD
+  - Wallets
+  - Refunds
+  tags_raw:
   - Payments
   - Cashier
   - Checkout
