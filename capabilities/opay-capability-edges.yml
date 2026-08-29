@@ -1,0 +1,47 @@
+slug: opay
+provider: OPay
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Banking & Capital Markets
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 3
+edges:
+- tag: Cashier
+  spec_file: opay-cashier-api-openapi.yml
+  capability_id: BC-1340.10
+  capability_id_l1: BC-1340
+  capability_name: Payment Initiation Management
+  confidence: 0.85
+  evidence: POST /cashier/create — "Create Hosted Cashier Payment Order"; POST /cashier/status — "Query
+    Payment Status"; schemas CashierCreateRequest, PayMethod, Amount
+  reason: The tag exposes hosted checkout payment order creation and status query for a merchant — payment
+    instruction capture, validation and authorisation across card, transfer, USSD, QR and wallet methods.
+    That is payment initiation within Payments & Card Management.
+- tag: Payments
+  spec_file: opay-payments-api-openapi.yml
+  capability_id: BC-1340.10
+  capability_id_l1: BC-1340
+  capability_name: Payment Initiation Management
+  confidence: 0.85
+  evidence: POST /payment/create — "Create Server Payment"; schemas BankCard, PaymentCreateRequest, NextAction,
+    PayMethod
+  reason: Server-to-server payment creation with card and other pay-method details plus a next-action
+    (e.g. 3DS) flow is payment instruction capture and authorisation, i.e. Payment Initiation Management.
+- tag: Refunds
+  spec_file: opay-refunds-api-openapi.yml
+  capability_id: BC-1340
+  capability_id_l1: BC-1340
+  capability_name: Payments & Card Management
+  confidence: 0.7
+  evidence: POST /payment/refund — "Refund Payment"; POST /payment/refund/status — "Query Refund Status";
+    schemas RefundRequest, RefundStatusResponse
+  reason: Refund initiation and refund status enquiry on merchant payments sit squarely in Payments &
+    Card Management, but the evidence does not name a specific sub-capability (it is neither clearly initiation,
+    clearing/settlement, nor card chargeback handling), so only the L1 is asserted.

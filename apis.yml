@@ -163,6 +163,9 @@ apis:
   - type: OpenAPI
     url: openapi/opay-refunds-api-openapi.yml
 common:
+  - type: CapabilityMap
+    url: capabilities/opay-capability-edges.yml
+    name: OPay Business Capability Map
   - type: AgenticAccess
     url: agentic-access/opay-agentic-access.yml
   - type: DomainSecurity
