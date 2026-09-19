@@ -57,7 +57,7 @@ tags:
   - Wallets
   - Savings
   - Buy Now Pay Later
-  - Bank Transfer
+  - Bank Transfers
   - Card Payments
   - USSD
   - Agent Banking
@@ -109,7 +109,7 @@ apis:
   - Cashier
   - Checkout
   - Cards
-  - Bank Transfer
+  - Bank Transfers
   - USSD
   - Wallets
   - Refunds
