@@ -1,29 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: OPay Cashier Refunds API
   version: '1.0'
-  description: 'The OPay Cashier API is the merchant payment API behind OPay Checkout. It
-
-    exposes a hosted Express Checkout endpoint plus server-to-server endpoints
-
-    for 3DS bank card, bank transfer, bank USSD, bank account, POS, OPay
-
-    wallet QR, and reference-code payments, with status query, cancel,
-
-    refund, and refund-status operations.
-
-
-    Authentication uses an `Authorization: Bearer <token>` header plus a
-
-    `MerchantId` header. For `cashier/create` the bearer token is the
-
-    merchant''s public key. For all other endpoints the bearer token is an
-
-    HMAC-SHA512 signature computed over the JSON request body using the
-
-    merchant''s private key.
-
-    '
+  description: The OPay Cashier API is the merchant payment API behind OPay Checkout.
   contact:
     name: OPay Merchant Support
     url: https://support.opaycheckout.com/support/ticket
@@ -46,9 +25,7 @@ paths:
       summary: Refund Payment
       description: 'Refund a previously settled payment, in full or in part. Authenticate
 
-        with an HMAC-SHA512 signature of the JSON body as the bearer token.
-
-        '
+        with an HMAC-SHA512 signature of the JSON body as the bearer token.'
       operationId: refundPayment
       security:
       - SignatureAuth: []
@@ -76,9 +53,7 @@ paths:
 
         refundOrderNo. Authenticate with an HMAC-SHA512 signature of the
 
-        JSON body as the bearer token.
-
-        '
+        JSON body as the bearer token.'
       operationId: queryRefundStatus
       security:
       - SignatureAuth: []
@@ -99,26 +74,6 @@ paths:
                 $ref: '#/components/schemas/RefundStatusResponse'
 components:
   schemas:
-    RefundResponse:
-      allOf:
-      - $ref: '#/components/schemas/ApiEnvelope'
-      - type: object
-        properties:
-          data:
-            type: object
-            properties:
-              refundOrderNo:
-                type: string
-              refundReference:
-                type: string
-              status:
-                type: string
-                enum:
-                - PENDING
-                - SUCCESS
-                - FAIL
-              amount:
-                $ref: '#/components/schemas/Amount'
     ApiEnvelope:
       type: object
       properties:
@@ -128,6 +83,16 @@ components:
         message:
           type: string
           example: SUCCESSFUL
+    RefundStatusRequest:
+      type: object
+      properties:
+        refundReference:
+          type: string
+        refundOrderNo:
+          type: string
+        country:
+          type: string
+          example: NG
     Amount:
       type: object
       required:
@@ -185,16 +150,26 @@ components:
           $ref: '#/components/schemas/Amount'
         reason:
           type: string
-    RefundStatusRequest:
-      type: object
-      properties:
-        refundReference:
-          type: string
-        refundOrderNo:
-          type: string
-        country:
-          type: string
-          example: NG
+    RefundResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiEnvelope'
+      - type: object
+        properties:
+          data:
+            type: object
+            properties:
+              refundOrderNo:
+                type: string
+              refundReference:
+                type: string
+              status:
+                type: string
+                enum:
+                - PENDING
+                - SUCCESS
+                - FAIL
+              amount:
+                $ref: '#/components/schemas/Amount'
   parameters:
     MerchantIdHeader:
       name: MerchantId

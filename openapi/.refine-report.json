@@ -12,7 +12,11 @@
   ],
   "archived": [],
   "errors": [],
-  "warnings": [],
-  "notes": [],
+  "warnings": [
+    "no openapi/_original/ archive: this run re-split PREVIOUSLY REFINED output, so any base URL it carries is inherited from an earlier pass rather than read from a document the provider published"
+  ],
+  "notes": [
+    "apis.yml register: already-registered"
+  ],
   "skipped": []
 }

@@ -1,29 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: OPay Cashier API
   version: '1.0'
-  description: 'The OPay Cashier API is the merchant payment API behind OPay Checkout. It
-
-    exposes a hosted Express Checkout endpoint plus server-to-server endpoints
-
-    for 3DS bank card, bank transfer, bank USSD, bank account, POS, OPay
-
-    wallet QR, and reference-code payments, with status query, cancel,
-
-    refund, and refund-status operations.
-
-
-    Authentication uses an `Authorization: Bearer <token>` header plus a
-
-    `MerchantId` header. For `cashier/create` the bearer token is the
-
-    merchant''s public key. For all other endpoints the bearer token is an
-
-    HMAC-SHA512 signature computed over the JSON request body using the
-
-    merchant''s private key.
-
-    '
+  description: The OPay Cashier API is the merchant payment API behind OPay Checkout.
   contact:
     name: OPay Merchant Support
     url: https://support.opaycheckout.com/support/ticket
@@ -50,9 +29,7 @@ paths:
 
         on an OPay-branded checkout page. Authenticate with the merchant''s
 
-        public key as the bearer token.
-
-        '
+        public key as the bearer token.'
       operationId: createCashierPayment
       security:
       - PublicKeyAuth: []
@@ -80,9 +57,7 @@ paths:
 
         orderNo. Authenticate with an HMAC-SHA512 signature of the JSON body
 
-        as the bearer token.
-
-        '
+        as the bearer token.'
       operationId: queryPaymentStatus
       security:
       - SignatureAuth: []
@@ -103,6 +78,16 @@ paths:
                 $ref: '#/components/schemas/PaymentStatusResponse'
 components:
   schemas:
+    PaymentStatusRequest:
+      type: object
+      properties:
+        reference:
+          type: string
+        orderNo:
+          type: string
+        country:
+          type: string
+          example: NG
     ApiEnvelope:
       type: object
       properties:
@@ -112,6 +97,35 @@ components:
         message:
           type: string
           example: SUCCESSFUL
+    UserInfo:
+      type: object
+      properties:
+        userId:
+          type: string
+        userName:
+          type: string
+        userEmail:
+          type: string
+        userMobile:
+          type: string
+    PayMethod:
+      type: string
+      enum:
+      - BankCard
+      - BankTransfer
+      - BankUSSD
+      - BankAccount
+      - POS
+      - OPay
+      - ReferenceCode
+    PaymentStatus:
+      type: string
+      enum:
+      - INITIAL
+      - PENDING
+      - SUCCESS
+      - FAIL
+      - CLOSE
     Amount:
       type: object
       required:
@@ -126,6 +140,13 @@ components:
           type: string
           description: ISO-4217 currency code.
           example: NGN
+    Product:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
     CashierCreateRequest:
       type: object
       required:
@@ -166,16 +187,6 @@ components:
           type: string
         customerVisitSource:
           type: string
-    PayMethod:
-      type: string
-      enum:
-      - BankCard
-      - BankTransfer
-      - BankUSSD
-      - BankAccount
-      - POS
-      - OPay
-      - ReferenceCode
     PaymentStatusResponse:
       allOf:
       - $ref: '#/components/schemas/ApiEnvelope'
@@ -195,16 +206,6 @@ components:
               createTime:
                 type: integer
                 format: int64
-    PaymentStatusRequest:
-      type: object
-      properties:
-        reference:
-          type: string
-        orderNo:
-          type: string
-        country:
-          type: string
-          example: NG
     CashierCreateResponse:
       allOf:
       - $ref: '#/components/schemas/ApiEnvelope'
@@ -225,32 +226,6 @@ components:
                 $ref: '#/components/schemas/Amount'
               vat:
                 $ref: '#/components/schemas/Amount'
-    Product:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-    PaymentStatus:
-      type: string
-      enum:
-      - INITIAL
-      - PENDING
-      - SUCCESS
-      - FAIL
-      - CLOSE
-    UserInfo:
-      type: object
-      properties:
-        userId:
-          type: string
-        userName:
-          type: string
-        userEmail:
-          type: string
-        userMobile:
-          type: string
   parameters:
     MerchantIdHeader:
       name: MerchantId

@@ -1,29 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: OPay Cashier Payments API
   version: '1.0'
-  description: 'The OPay Cashier API is the merchant payment API behind OPay Checkout. It
-
-    exposes a hosted Express Checkout endpoint plus server-to-server endpoints
-
-    for 3DS bank card, bank transfer, bank USSD, bank account, POS, OPay
-
-    wallet QR, and reference-code payments, with status query, cancel,
-
-    refund, and refund-status operations.
-
-
-    Authentication uses an `Authorization: Bearer <token>` header plus a
-
-    `MerchantId` header. For `cashier/create` the bearer token is the
-
-    merchant''s public key. For all other endpoints the bearer token is an
-
-    HMAC-SHA512 signature computed over the JSON request body using the
-
-    merchant''s private key.
-
-    '
+  description: The OPay Cashier API is the merchant payment API behind OPay Checkout.
   contact:
     name: OPay Merchant Support
     url: https://support.opaycheckout.com/support/ticket
@@ -56,9 +35,7 @@ paths:
 
         USSD code, etc.). Authenticate with an HMAC-SHA512 signature of the
 
-        JSON body as the bearer token.
-
-        '
+        JSON body as the bearer token.'
       operationId: createPayment
       security:
       - SignatureAuth: []
@@ -79,20 +56,32 @@ paths:
                 $ref: '#/components/schemas/PaymentCreateResponse'
 components:
   schemas:
-    Amount:
+    UserInfo:
       type: object
-      required:
-      - total
-      - currency
       properties:
-        total:
-          type: integer
-          format: int64
-          description: Amount in the smallest currency unit (e.g. kobo / cent).
-        currency:
+        userId:
           type: string
-          description: ISO-4217 currency code.
-          example: NGN
+        userName:
+          type: string
+        userEmail:
+          type: string
+        userMobile:
+          type: string
+    BankCard:
+      type: object
+      properties:
+        cardHolderName:
+          type: string
+        cardNumber:
+          type: string
+        cvv:
+          type: string
+        expiryMonth:
+          type: string
+        expiryYear:
+          type: string
+        enable3DS:
+          type: boolean
     ApiEnvelope:
       type: object
       properties:
@@ -112,21 +101,53 @@ components:
       - POS
       - OPay
       - ReferenceCode
-    BankCard:
+    PaymentCreateResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiEnvelope'
+      - type: object
+        properties:
+          data:
+            type: object
+            properties:
+              reference:
+                type: string
+              orderNo:
+                type: string
+              status:
+                $ref: '#/components/schemas/PaymentStatus'
+              amount:
+                $ref: '#/components/schemas/Amount'
+              nextAction:
+                $ref: '#/components/schemas/NextAction'
+    PaymentStatus:
+      type: string
+      enum:
+      - INITIAL
+      - PENDING
+      - SUCCESS
+      - FAIL
+      - CLOSE
+    Amount:
+      type: object
+      required:
+      - total
+      - currency
+      properties:
+        total:
+          type: integer
+          format: int64
+          description: Amount in the smallest currency unit (e.g. kobo / cent).
+        currency:
+          type: string
+          description: ISO-4217 currency code.
+          example: NGN
+    Product:
       type: object
       properties:
-        cardHolderName:
+        name:
           type: string
-        cardNumber:
+        description:
           type: string
-        cvv:
-          type: string
-        expiryMonth:
-          type: string
-        expiryYear:
-          type: string
-        enable3DS:
-          type: boolean
     NextAction:
       type: object
       description: Instructions for the next step required to complete the payment.
@@ -148,31 +169,6 @@ components:
         expiredTimestamp:
           type: integer
           format: int64
-    PaymentCreateResponse:
-      allOf:
-      - $ref: '#/components/schemas/ApiEnvelope'
-      - type: object
-        properties:
-          data:
-            type: object
-            properties:
-              reference:
-                type: string
-              orderNo:
-                type: string
-              status:
-                $ref: '#/components/schemas/PaymentStatus'
-              amount:
-                $ref: '#/components/schemas/Amount'
-              nextAction:
-                $ref: '#/components/schemas/NextAction'
-    Product:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
     PaymentCreateRequest:
       type: object
       required:
@@ -205,25 +201,6 @@ components:
           type: string
         bankcard:
           $ref: '#/components/schemas/BankCard'
-    PaymentStatus:
-      type: string
-      enum:
-      - INITIAL
-      - PENDING
-      - SUCCESS
-      - FAIL
-      - CLOSE
-    UserInfo:
-      type: object
-      properties:
-        userId:
-          type: string
-        userName:
-          type: string
-        userEmail:
-          type: string
-        userMobile:
-          type: string
   parameters:
     MerchantIdHeader:
       name: MerchantId
