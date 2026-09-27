@@ -74,15 +74,6 @@ paths:
                 $ref: '#/components/schemas/RefundStatusResponse'
 components:
   schemas:
-    ApiEnvelope:
-      type: object
-      properties:
-        code:
-          type: string
-          example: '00000'
-        message:
-          type: string
-          example: SUCCESSFUL
     RefundStatusRequest:
       type: object
       properties:
@@ -93,20 +84,15 @@ components:
         country:
           type: string
           example: NG
-    Amount:
+    ApiEnvelope:
       type: object
-      required:
-      - total
-      - currency
       properties:
-        total:
-          type: integer
-          format: int64
-          description: Amount in the smallest currency unit (e.g. kobo / cent).
-        currency:
+        code:
           type: string
-          description: ISO-4217 currency code.
-          example: NGN
+          example: '00000'
+        message:
+          type: string
+          example: SUCCESSFUL
     RefundStatusResponse:
       allOf:
       - $ref: '#/components/schemas/ApiEnvelope'
@@ -118,6 +104,26 @@ components:
               refundReference:
                 type: string
               refundOrderNo:
+                type: string
+              status:
+                type: string
+                enum:
+                - PENDING
+                - SUCCESS
+                - FAIL
+              amount:
+                $ref: '#/components/schemas/Amount'
+    RefundResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiEnvelope'
+      - type: object
+        properties:
+          data:
+            type: object
+            properties:
+              refundOrderNo:
+                type: string
+              refundReference:
                 type: string
               status:
                 type: string
@@ -150,26 +156,20 @@ components:
           $ref: '#/components/schemas/Amount'
         reason:
           type: string
-    RefundResponse:
-      allOf:
-      - $ref: '#/components/schemas/ApiEnvelope'
-      - type: object
-        properties:
-          data:
-            type: object
-            properties:
-              refundOrderNo:
-                type: string
-              refundReference:
-                type: string
-              status:
-                type: string
-                enum:
-                - PENDING
-                - SUCCESS
-                - FAIL
-              amount:
-                $ref: '#/components/schemas/Amount'
+    Amount:
+      type: object
+      required:
+      - total
+      - currency
+      properties:
+        total:
+          type: integer
+          format: int64
+          description: Amount in the smallest currency unit (e.g. kobo / cent).
+        currency:
+          type: string
+          description: ISO-4217 currency code.
+          example: NGN
   parameters:
     MerchantIdHeader:
       name: MerchantId

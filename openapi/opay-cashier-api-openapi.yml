@@ -78,16 +78,13 @@ paths:
                 $ref: '#/components/schemas/PaymentStatusResponse'
 components:
   schemas:
-    PaymentStatusRequest:
+    Product:
       type: object
       properties:
-        reference:
+        name:
           type: string
-        orderNo:
+        description:
           type: string
-        country:
-          type: string
-          example: NG
     ApiEnvelope:
       type: object
       properties:
@@ -97,56 +94,45 @@ components:
         message:
           type: string
           example: SUCCESSFUL
-    UserInfo:
-      type: object
-      properties:
-        userId:
-          type: string
-        userName:
-          type: string
-        userEmail:
-          type: string
-        userMobile:
-          type: string
-    PayMethod:
-      type: string
-      enum:
-      - BankCard
-      - BankTransfer
-      - BankUSSD
-      - BankAccount
-      - POS
-      - OPay
-      - ReferenceCode
-    PaymentStatus:
-      type: string
-      enum:
-      - INITIAL
-      - PENDING
-      - SUCCESS
-      - FAIL
-      - CLOSE
-    Amount:
-      type: object
-      required:
-      - total
-      - currency
-      properties:
-        total:
-          type: integer
-          format: int64
-          description: Amount in the smallest currency unit (e.g. kobo / cent).
-        currency:
-          type: string
-          description: ISO-4217 currency code.
-          example: NGN
-    Product:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
+    PaymentStatusResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiEnvelope'
+      - type: object
+        properties:
+          data:
+            type: object
+            properties:
+              reference:
+                type: string
+              orderNo:
+                type: string
+              status:
+                $ref: '#/components/schemas/PaymentStatus'
+              amount:
+                $ref: '#/components/schemas/Amount'
+              createTime:
+                type: integer
+                format: int64
+    CashierCreateResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiEnvelope'
+      - type: object
+        properties:
+          data:
+            type: object
+            properties:
+              cashierUrl:
+                type: string
+              orderNo:
+                type: string
+              reference:
+                type: string
+              status:
+                $ref: '#/components/schemas/PaymentStatus'
+              amount:
+                $ref: '#/components/schemas/Amount'
+              vat:
+                $ref: '#/components/schemas/Amount'
     CashierCreateRequest:
       type: object
       required:
@@ -187,45 +173,59 @@ components:
           type: string
         customerVisitSource:
           type: string
-    PaymentStatusResponse:
-      allOf:
-      - $ref: '#/components/schemas/ApiEnvelope'
-      - type: object
-        properties:
-          data:
-            type: object
-            properties:
-              reference:
-                type: string
-              orderNo:
-                type: string
-              status:
-                $ref: '#/components/schemas/PaymentStatus'
-              amount:
-                $ref: '#/components/schemas/Amount'
-              createTime:
-                type: integer
-                format: int64
-    CashierCreateResponse:
-      allOf:
-      - $ref: '#/components/schemas/ApiEnvelope'
-      - type: object
-        properties:
-          data:
-            type: object
-            properties:
-              cashierUrl:
-                type: string
-              orderNo:
-                type: string
-              reference:
-                type: string
-              status:
-                $ref: '#/components/schemas/PaymentStatus'
-              amount:
-                $ref: '#/components/schemas/Amount'
-              vat:
-                $ref: '#/components/schemas/Amount'
+    UserInfo:
+      type: object
+      properties:
+        userId:
+          type: string
+        userName:
+          type: string
+        userEmail:
+          type: string
+        userMobile:
+          type: string
+    PaymentStatusRequest:
+      type: object
+      properties:
+        reference:
+          type: string
+        orderNo:
+          type: string
+        country:
+          type: string
+          example: NG
+    PayMethod:
+      type: string
+      enum:
+      - BankCard
+      - BankTransfer
+      - BankUSSD
+      - BankAccount
+      - POS
+      - OPay
+      - ReferenceCode
+    Amount:
+      type: object
+      required:
+      - total
+      - currency
+      properties:
+        total:
+          type: integer
+          format: int64
+          description: Amount in the smallest currency unit (e.g. kobo / cent).
+        currency:
+          type: string
+          description: ISO-4217 currency code.
+          example: NGN
+    PaymentStatus:
+      type: string
+      enum:
+      - INITIAL
+      - PENDING
+      - SUCCESS
+      - FAIL
+      - CLOSE
   parameters:
     MerchantIdHeader:
       name: MerchantId

@@ -56,98 +56,6 @@ paths:
                 $ref: '#/components/schemas/PaymentCreateResponse'
 components:
   schemas:
-    UserInfo:
-      type: object
-      properties:
-        userId:
-          type: string
-        userName:
-          type: string
-        userEmail:
-          type: string
-        userMobile:
-          type: string
-    BankCard:
-      type: object
-      properties:
-        cardHolderName:
-          type: string
-        cardNumber:
-          type: string
-        cvv:
-          type: string
-        expiryMonth:
-          type: string
-        expiryYear:
-          type: string
-        enable3DS:
-          type: boolean
-    ApiEnvelope:
-      type: object
-      properties:
-        code:
-          type: string
-          example: '00000'
-        message:
-          type: string
-          example: SUCCESSFUL
-    PayMethod:
-      type: string
-      enum:
-      - BankCard
-      - BankTransfer
-      - BankUSSD
-      - BankAccount
-      - POS
-      - OPay
-      - ReferenceCode
-    PaymentCreateResponse:
-      allOf:
-      - $ref: '#/components/schemas/ApiEnvelope'
-      - type: object
-        properties:
-          data:
-            type: object
-            properties:
-              reference:
-                type: string
-              orderNo:
-                type: string
-              status:
-                $ref: '#/components/schemas/PaymentStatus'
-              amount:
-                $ref: '#/components/schemas/Amount'
-              nextAction:
-                $ref: '#/components/schemas/NextAction'
-    PaymentStatus:
-      type: string
-      enum:
-      - INITIAL
-      - PENDING
-      - SUCCESS
-      - FAIL
-      - CLOSE
-    Amount:
-      type: object
-      required:
-      - total
-      - currency
-      properties:
-        total:
-          type: integer
-          format: int64
-          description: Amount in the smallest currency unit (e.g. kobo / cent).
-        currency:
-          type: string
-          description: ISO-4217 currency code.
-          example: NGN
-    Product:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
     NextAction:
       type: object
       description: Instructions for the next step required to complete the payment.
@@ -201,6 +109,98 @@ components:
           type: string
         bankcard:
           $ref: '#/components/schemas/BankCard'
+    Product:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    ApiEnvelope:
+      type: object
+      properties:
+        code:
+          type: string
+          example: '00000'
+        message:
+          type: string
+          example: SUCCESSFUL
+    BankCard:
+      type: object
+      properties:
+        cardHolderName:
+          type: string
+        cardNumber:
+          type: string
+        cvv:
+          type: string
+        expiryMonth:
+          type: string
+        expiryYear:
+          type: string
+        enable3DS:
+          type: boolean
+    UserInfo:
+      type: object
+      properties:
+        userId:
+          type: string
+        userName:
+          type: string
+        userEmail:
+          type: string
+        userMobile:
+          type: string
+    PaymentCreateResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiEnvelope'
+      - type: object
+        properties:
+          data:
+            type: object
+            properties:
+              reference:
+                type: string
+              orderNo:
+                type: string
+              status:
+                $ref: '#/components/schemas/PaymentStatus'
+              amount:
+                $ref: '#/components/schemas/Amount'
+              nextAction:
+                $ref: '#/components/schemas/NextAction'
+    PayMethod:
+      type: string
+      enum:
+      - BankCard
+      - BankTransfer
+      - BankUSSD
+      - BankAccount
+      - POS
+      - OPay
+      - ReferenceCode
+    Amount:
+      type: object
+      required:
+      - total
+      - currency
+      properties:
+        total:
+          type: integer
+          format: int64
+          description: Amount in the smallest currency unit (e.g. kobo / cent).
+        currency:
+          type: string
+          description: ISO-4217 currency code.
+          example: NGN
+    PaymentStatus:
+      type: string
+      enum:
+      - INITIAL
+      - PENDING
+      - SUCCESS
+      - FAIL
+      - CLOSE
   parameters:
     MerchantIdHeader:
       name: MerchantId
