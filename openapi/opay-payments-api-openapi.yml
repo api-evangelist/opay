@@ -77,6 +77,42 @@ components:
         expiredTimestamp:
           type: integer
           format: int64
+    UserInfo:
+      type: object
+      properties:
+        userId:
+          type: string
+        userName:
+          type: string
+        userEmail:
+          type: string
+        userMobile:
+          type: string
+    PaymentCreateResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiEnvelope'
+      - type: object
+        properties:
+          data:
+            type: object
+            properties:
+              reference:
+                type: string
+              orderNo:
+                type: string
+              status:
+                $ref: '#/components/schemas/PaymentStatus'
+              amount:
+                $ref: '#/components/schemas/Amount'
+              nextAction:
+                $ref: '#/components/schemas/NextAction'
+    Product:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
     PaymentCreateRequest:
       type: object
       required:
@@ -109,13 +145,16 @@ components:
           type: string
         bankcard:
           $ref: '#/components/schemas/BankCard'
-    Product:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
+    PayMethod:
+      type: string
+      enum:
+      - BankCard
+      - BankTransfer
+      - BankUSSD
+      - BankAccount
+      - POS
+      - OPay
+      - ReferenceCode
     ApiEnvelope:
       type: object
       properties:
@@ -140,45 +179,6 @@ components:
           type: string
         enable3DS:
           type: boolean
-    UserInfo:
-      type: object
-      properties:
-        userId:
-          type: string
-        userName:
-          type: string
-        userEmail:
-          type: string
-        userMobile:
-          type: string
-    PaymentCreateResponse:
-      allOf:
-      - $ref: '#/components/schemas/ApiEnvelope'
-      - type: object
-        properties:
-          data:
-            type: object
-            properties:
-              reference:
-                type: string
-              orderNo:
-                type: string
-              status:
-                $ref: '#/components/schemas/PaymentStatus'
-              amount:
-                $ref: '#/components/schemas/Amount'
-              nextAction:
-                $ref: '#/components/schemas/NextAction'
-    PayMethod:
-      type: string
-      enum:
-      - BankCard
-      - BankTransfer
-      - BankUSSD
-      - BankAccount
-      - POS
-      - OPay
-      - ReferenceCode
     Amount:
       type: object
       required:

@@ -74,25 +74,6 @@ paths:
                 $ref: '#/components/schemas/RefundStatusResponse'
 components:
   schemas:
-    RefundStatusRequest:
-      type: object
-      properties:
-        refundReference:
-          type: string
-        refundOrderNo:
-          type: string
-        country:
-          type: string
-          example: NG
-    ApiEnvelope:
-      type: object
-      properties:
-        code:
-          type: string
-          example: '00000'
-        message:
-          type: string
-          example: SUCCESSFUL
     RefundStatusResponse:
       allOf:
       - $ref: '#/components/schemas/ApiEnvelope'
@@ -113,6 +94,25 @@ components:
                 - FAIL
               amount:
                 $ref: '#/components/schemas/Amount'
+    RefundStatusRequest:
+      type: object
+      properties:
+        refundReference:
+          type: string
+        refundOrderNo:
+          type: string
+        country:
+          type: string
+          example: NG
+    ApiEnvelope:
+      type: object
+      properties:
+        code:
+          type: string
+          example: '00000'
+        message:
+          type: string
+          example: SUCCESSFUL
     RefundResponse:
       allOf:
       - $ref: '#/components/schemas/ApiEnvelope'

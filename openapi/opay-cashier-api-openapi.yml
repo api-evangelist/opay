@@ -78,6 +78,27 @@ paths:
                 $ref: '#/components/schemas/PaymentStatusResponse'
 components:
   schemas:
+    PaymentStatusRequest:
+      type: object
+      properties:
+        reference:
+          type: string
+        orderNo:
+          type: string
+        country:
+          type: string
+          example: NG
+    UserInfo:
+      type: object
+      properties:
+        userId:
+          type: string
+        userName:
+          type: string
+        userEmail:
+          type: string
+        userMobile:
+          type: string
     Product:
       type: object
       properties:
@@ -85,6 +106,16 @@ components:
           type: string
         description:
           type: string
+    PayMethod:
+      type: string
+      enum:
+      - BankCard
+      - BankTransfer
+      - BankUSSD
+      - BankAccount
+      - POS
+      - OPay
+      - ReferenceCode
     ApiEnvelope:
       type: object
       properties:
@@ -94,25 +125,6 @@ components:
         message:
           type: string
           example: SUCCESSFUL
-    PaymentStatusResponse:
-      allOf:
-      - $ref: '#/components/schemas/ApiEnvelope'
-      - type: object
-        properties:
-          data:
-            type: object
-            properties:
-              reference:
-                type: string
-              orderNo:
-                type: string
-              status:
-                $ref: '#/components/schemas/PaymentStatus'
-              amount:
-                $ref: '#/components/schemas/Amount'
-              createTime:
-                type: integer
-                format: int64
     CashierCreateResponse:
       allOf:
       - $ref: '#/components/schemas/ApiEnvelope'
@@ -173,37 +185,6 @@ components:
           type: string
         customerVisitSource:
           type: string
-    UserInfo:
-      type: object
-      properties:
-        userId:
-          type: string
-        userName:
-          type: string
-        userEmail:
-          type: string
-        userMobile:
-          type: string
-    PaymentStatusRequest:
-      type: object
-      properties:
-        reference:
-          type: string
-        orderNo:
-          type: string
-        country:
-          type: string
-          example: NG
-    PayMethod:
-      type: string
-      enum:
-      - BankCard
-      - BankTransfer
-      - BankUSSD
-      - BankAccount
-      - POS
-      - OPay
-      - ReferenceCode
     Amount:
       type: object
       required:
@@ -218,6 +199,25 @@ components:
           type: string
           description: ISO-4217 currency code.
           example: NGN
+    PaymentStatusResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiEnvelope'
+      - type: object
+        properties:
+          data:
+            type: object
+            properties:
+              reference:
+                type: string
+              orderNo:
+                type: string
+              status:
+                $ref: '#/components/schemas/PaymentStatus'
+              amount:
+                $ref: '#/components/schemas/Amount'
+              createTime:
+                type: integer
+                format: int64
     PaymentStatus:
       type: string
       enum:
