@@ -78,16 +78,6 @@ paths:
                 $ref: '#/components/schemas/PaymentStatusResponse'
 components:
   schemas:
-    PaymentStatusRequest:
-      type: object
-      properties:
-        reference:
-          type: string
-        orderNo:
-          type: string
-        country:
-          type: string
-          example: NG
     UserInfo:
       type: object
       properties:
@@ -99,52 +89,6 @@ components:
           type: string
         userMobile:
           type: string
-    Product:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-    PayMethod:
-      type: string
-      enum:
-      - BankCard
-      - BankTransfer
-      - BankUSSD
-      - BankAccount
-      - POS
-      - OPay
-      - ReferenceCode
-    ApiEnvelope:
-      type: object
-      properties:
-        code:
-          type: string
-          example: '00000'
-        message:
-          type: string
-          example: SUCCESSFUL
-    CashierCreateResponse:
-      allOf:
-      - $ref: '#/components/schemas/ApiEnvelope'
-      - type: object
-        properties:
-          data:
-            type: object
-            properties:
-              cashierUrl:
-                type: string
-              orderNo:
-                type: string
-              reference:
-                type: string
-              status:
-                $ref: '#/components/schemas/PaymentStatus'
-              amount:
-                $ref: '#/components/schemas/Amount'
-              vat:
-                $ref: '#/components/schemas/Amount'
     CashierCreateRequest:
       type: object
       required:
@@ -185,6 +129,23 @@ components:
           type: string
         customerVisitSource:
           type: string
+    PaymentStatus:
+      type: string
+      enum:
+      - INITIAL
+      - PENDING
+      - SUCCESS
+      - FAIL
+      - CLOSE
+    ApiEnvelope:
+      type: object
+      properties:
+        code:
+          type: string
+          example: '00000'
+        message:
+          type: string
+          example: SUCCESSFUL
     Amount:
       type: object
       required:
@@ -199,6 +160,33 @@ components:
           type: string
           description: ISO-4217 currency code.
           example: NGN
+    Product:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    PaymentStatusRequest:
+      type: object
+      properties:
+        reference:
+          type: string
+        orderNo:
+          type: string
+        country:
+          type: string
+          example: NG
+    PayMethod:
+      type: string
+      enum:
+      - BankCard
+      - BankTransfer
+      - BankUSSD
+      - BankAccount
+      - POS
+      - OPay
+      - ReferenceCode
     PaymentStatusResponse:
       allOf:
       - $ref: '#/components/schemas/ApiEnvelope'
@@ -218,14 +206,26 @@ components:
               createTime:
                 type: integer
                 format: int64
-    PaymentStatus:
-      type: string
-      enum:
-      - INITIAL
-      - PENDING
-      - SUCCESS
-      - FAIL
-      - CLOSE
+    CashierCreateResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiEnvelope'
+      - type: object
+        properties:
+          data:
+            type: object
+            properties:
+              cashierUrl:
+                type: string
+              orderNo:
+                type: string
+              reference:
+                type: string
+              status:
+                $ref: '#/components/schemas/PaymentStatus'
+              amount:
+                $ref: '#/components/schemas/Amount'
+              vat:
+                $ref: '#/components/schemas/Amount'
   parameters:
     MerchantIdHeader:
       name: MerchantId

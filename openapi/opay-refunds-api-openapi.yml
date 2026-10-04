@@ -73,27 +73,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/RefundStatusResponse'
 components:
+  parameters:
+    MerchantIdHeader:
+      name: MerchantId
+      in: header
+      required: true
+      schema:
+        type: string
+      description: The merchant identifier issued by OPay (e.g. 256612345678901).
   schemas:
-    RefundStatusResponse:
-      allOf:
-      - $ref: '#/components/schemas/ApiEnvelope'
-      - type: object
-        properties:
-          data:
-            type: object
-            properties:
-              refundReference:
-                type: string
-              refundOrderNo:
-                type: string
-              status:
-                type: string
-                enum:
-                - PENDING
-                - SUCCESS
-                - FAIL
-              amount:
-                $ref: '#/components/schemas/Amount'
     RefundStatusRequest:
       type: object
       properties:
@@ -104,15 +92,6 @@ components:
         country:
           type: string
           example: NG
-    ApiEnvelope:
-      type: object
-      properties:
-        code:
-          type: string
-          example: '00000'
-        message:
-          type: string
-          example: SUCCESSFUL
     RefundResponse:
       allOf:
       - $ref: '#/components/schemas/ApiEnvelope'
@@ -124,6 +103,49 @@ components:
               refundOrderNo:
                 type: string
               refundReference:
+                type: string
+              status:
+                type: string
+                enum:
+                - PENDING
+                - SUCCESS
+                - FAIL
+              amount:
+                $ref: '#/components/schemas/Amount'
+    ApiEnvelope:
+      type: object
+      properties:
+        code:
+          type: string
+          example: '00000'
+        message:
+          type: string
+          example: SUCCESSFUL
+    Amount:
+      type: object
+      required:
+      - total
+      - currency
+      properties:
+        total:
+          type: integer
+          format: int64
+          description: Amount in the smallest currency unit (e.g. kobo / cent).
+        currency:
+          type: string
+          description: ISO-4217 currency code.
+          example: NGN
+    RefundStatusResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiEnvelope'
+      - type: object
+        properties:
+          data:
+            type: object
+            properties:
+              refundReference:
+                type: string
+              refundOrderNo:
                 type: string
               status:
                 type: string
@@ -156,28 +178,6 @@ components:
           $ref: '#/components/schemas/Amount'
         reason:
           type: string
-    Amount:
-      type: object
-      required:
-      - total
-      - currency
-      properties:
-        total:
-          type: integer
-          format: int64
-          description: Amount in the smallest currency unit (e.g. kobo / cent).
-        currency:
-          type: string
-          description: ISO-4217 currency code.
-          example: NGN
-  parameters:
-    MerchantIdHeader:
-      name: MerchantId
-      in: header
-      required: true
-      schema:
-        type: string
-      description: The merchant identifier issued by OPay (e.g. 256612345678901).
   securitySchemes:
     PublicKeyAuth:
       type: http

@@ -56,27 +56,6 @@ paths:
                 $ref: '#/components/schemas/PaymentCreateResponse'
 components:
   schemas:
-    NextAction:
-      type: object
-      description: Instructions for the next step required to complete the payment.
-      properties:
-        actionType:
-          type: string
-          enum:
-          - REDIRECT_3DS
-          - TRANSFER_ACCOUNT
-          - USSD
-          - QR_CODE
-          - REFERENCE_CODE
-        redirectUrl:
-          type: string
-        transferAccountNumber:
-          type: string
-        transferBankName:
-          type: string
-        expiredTimestamp:
-          type: integer
-          format: int64
     UserInfo:
       type: object
       properties:
@@ -106,6 +85,73 @@ components:
                 $ref: '#/components/schemas/Amount'
               nextAction:
                 $ref: '#/components/schemas/NextAction'
+    PaymentStatus:
+      type: string
+      enum:
+      - INITIAL
+      - PENDING
+      - SUCCESS
+      - FAIL
+      - CLOSE
+    BankCard:
+      type: object
+      properties:
+        cardHolderName:
+          type: string
+        cardNumber:
+          type: string
+        cvv:
+          type: string
+        expiryMonth:
+          type: string
+        expiryYear:
+          type: string
+        enable3DS:
+          type: boolean
+    NextAction:
+      type: object
+      description: Instructions for the next step required to complete the payment.
+      properties:
+        actionType:
+          type: string
+          enum:
+          - REDIRECT_3DS
+          - TRANSFER_ACCOUNT
+          - USSD
+          - QR_CODE
+          - REFERENCE_CODE
+        redirectUrl:
+          type: string
+        transferAccountNumber:
+          type: string
+        transferBankName:
+          type: string
+        expiredTimestamp:
+          type: integer
+          format: int64
+    Amount:
+      type: object
+      required:
+      - total
+      - currency
+      properties:
+        total:
+          type: integer
+          format: int64
+          description: Amount in the smallest currency unit (e.g. kobo / cent).
+        currency:
+          type: string
+          description: ISO-4217 currency code.
+          example: NGN
+    ApiEnvelope:
+      type: object
+      properties:
+        code:
+          type: string
+          example: '00000'
+        message:
+          type: string
+          example: SUCCESSFUL
     Product:
       type: object
       properties:
@@ -113,6 +159,16 @@ components:
           type: string
         description:
           type: string
+    PayMethod:
+      type: string
+      enum:
+      - BankCard
+      - BankTransfer
+      - BankUSSD
+      - BankAccount
+      - POS
+      - OPay
+      - ReferenceCode
     PaymentCreateRequest:
       type: object
       required:
@@ -145,62 +201,6 @@ components:
           type: string
         bankcard:
           $ref: '#/components/schemas/BankCard'
-    PayMethod:
-      type: string
-      enum:
-      - BankCard
-      - BankTransfer
-      - BankUSSD
-      - BankAccount
-      - POS
-      - OPay
-      - ReferenceCode
-    ApiEnvelope:
-      type: object
-      properties:
-        code:
-          type: string
-          example: '00000'
-        message:
-          type: string
-          example: SUCCESSFUL
-    BankCard:
-      type: object
-      properties:
-        cardHolderName:
-          type: string
-        cardNumber:
-          type: string
-        cvv:
-          type: string
-        expiryMonth:
-          type: string
-        expiryYear:
-          type: string
-        enable3DS:
-          type: boolean
-    Amount:
-      type: object
-      required:
-      - total
-      - currency
-      properties:
-        total:
-          type: integer
-          format: int64
-          description: Amount in the smallest currency unit (e.g. kobo / cent).
-        currency:
-          type: string
-          description: ISO-4217 currency code.
-          example: NGN
-    PaymentStatus:
-      type: string
-      enum:
-      - INITIAL
-      - PENDING
-      - SUCCESS
-      - FAIL
-      - CLOSE
   parameters:
     MerchantIdHeader:
       name: MerchantId
