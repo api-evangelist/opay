@@ -89,7 +89,7 @@ tags_raw:
   - Merchant Acquiring
 url: https://raw.githubusercontent.com/api-evangelist/opay/refs/heads/main/apis.yml
 created: '2026-05-24'
-modified: '2026-05-24'
+modified: '2026-10-06'
 specificationVersion: '0.23'
 apis:
 - aid: opay:opay-cashier-api
@@ -164,6 +164,8 @@ apis:
   - type: OpenAPI
     url: openapi/opay-refunds-api-openapi.yml
 common:
+  - url: https://www.opayweb.com/newsroom/
+    type: Blog
   - type: CapabilityMap
     url: capabilities/opay-capability-edges.yml
     name: OPay Business Capability Map
