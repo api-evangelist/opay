@@ -73,54 +73,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/RefundStatusResponse'
 components:
-  parameters:
-    MerchantIdHeader:
-      name: MerchantId
-      in: header
-      required: true
-      schema:
-        type: string
-      description: The merchant identifier issued by OPay (e.g. 256612345678901).
   schemas:
-    RefundStatusRequest:
-      type: object
-      properties:
-        refundReference:
-          type: string
-        refundOrderNo:
-          type: string
-        country:
-          type: string
-          example: NG
-    RefundResponse:
-      allOf:
-      - $ref: '#/components/schemas/ApiEnvelope'
-      - type: object
-        properties:
-          data:
-            type: object
-            properties:
-              refundOrderNo:
-                type: string
-              refundReference:
-                type: string
-              status:
-                type: string
-                enum:
-                - PENDING
-                - SUCCESS
-                - FAIL
-              amount:
-                $ref: '#/components/schemas/Amount'
-    ApiEnvelope:
-      type: object
-      properties:
-        code:
-          type: string
-          example: '00000'
-        message:
-          type: string
-          example: SUCCESSFUL
     Amount:
       type: object
       required:
@@ -178,6 +131,53 @@ components:
           $ref: '#/components/schemas/Amount'
         reason:
           type: string
+    RefundStatusRequest:
+      type: object
+      properties:
+        refundReference:
+          type: string
+        refundOrderNo:
+          type: string
+        country:
+          type: string
+          example: NG
+    RefundResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiEnvelope'
+      - type: object
+        properties:
+          data:
+            type: object
+            properties:
+              refundOrderNo:
+                type: string
+              refundReference:
+                type: string
+              status:
+                type: string
+                enum:
+                - PENDING
+                - SUCCESS
+                - FAIL
+              amount:
+                $ref: '#/components/schemas/Amount'
+    ApiEnvelope:
+      type: object
+      properties:
+        code:
+          type: string
+          example: '00000'
+        message:
+          type: string
+          example: SUCCESSFUL
+  parameters:
+    MerchantIdHeader:
+      name: MerchantId
+      in: header
+      required: true
+      schema:
+        type: string
+      description: The merchant identifier issued by OPay (e.g. 256612345678901).
   securitySchemes:
     PublicKeyAuth:
       type: http

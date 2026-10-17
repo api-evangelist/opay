@@ -78,17 +78,66 @@ paths:
                 $ref: '#/components/schemas/PaymentStatusResponse'
 components:
   schemas:
-    UserInfo:
+    Amount:
+      type: object
+      required:
+      - total
+      - currency
+      properties:
+        total:
+          type: integer
+          format: int64
+          description: Amount in the smallest currency unit (e.g. kobo / cent).
+        currency:
+          type: string
+          description: ISO-4217 currency code.
+          example: NGN
+    Product:
       type: object
       properties:
-        userId:
+        name:
           type: string
-        userName:
+        description:
           type: string
-        userEmail:
+    PaymentStatusResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiEnvelope'
+      - type: object
+        properties:
+          data:
+            type: object
+            properties:
+              reference:
+                type: string
+              orderNo:
+                type: string
+              status:
+                $ref: '#/components/schemas/PaymentStatus'
+              amount:
+                $ref: '#/components/schemas/Amount'
+              createTime:
+                type: integer
+                format: int64
+    PaymentStatusRequest:
+      type: object
+      properties:
+        reference:
           type: string
-        userMobile:
+        orderNo:
           type: string
+        country:
+          type: string
+          example: NG
+    PayMethod:
+      type: string
+      enum:
+      - BankCard
+      - BankTransfer
+      - BankUSSD
+      - BankAccount
+      - POS
+      - OPay
+      - ReferenceCode
     CashierCreateRequest:
       type: object
       required:
@@ -129,83 +178,6 @@ components:
           type: string
         customerVisitSource:
           type: string
-    PaymentStatus:
-      type: string
-      enum:
-      - INITIAL
-      - PENDING
-      - SUCCESS
-      - FAIL
-      - CLOSE
-    ApiEnvelope:
-      type: object
-      properties:
-        code:
-          type: string
-          example: '00000'
-        message:
-          type: string
-          example: SUCCESSFUL
-    Amount:
-      type: object
-      required:
-      - total
-      - currency
-      properties:
-        total:
-          type: integer
-          format: int64
-          description: Amount in the smallest currency unit (e.g. kobo / cent).
-        currency:
-          type: string
-          description: ISO-4217 currency code.
-          example: NGN
-    Product:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-    PaymentStatusRequest:
-      type: object
-      properties:
-        reference:
-          type: string
-        orderNo:
-          type: string
-        country:
-          type: string
-          example: NG
-    PayMethod:
-      type: string
-      enum:
-      - BankCard
-      - BankTransfer
-      - BankUSSD
-      - BankAccount
-      - POS
-      - OPay
-      - ReferenceCode
-    PaymentStatusResponse:
-      allOf:
-      - $ref: '#/components/schemas/ApiEnvelope'
-      - type: object
-        properties:
-          data:
-            type: object
-            properties:
-              reference:
-                type: string
-              orderNo:
-                type: string
-              status:
-                $ref: '#/components/schemas/PaymentStatus'
-              amount:
-                $ref: '#/components/schemas/Amount'
-              createTime:
-                type: integer
-                format: int64
     CashierCreateResponse:
       allOf:
       - $ref: '#/components/schemas/ApiEnvelope'
@@ -226,6 +198,34 @@ components:
                 $ref: '#/components/schemas/Amount'
               vat:
                 $ref: '#/components/schemas/Amount'
+    PaymentStatus:
+      type: string
+      enum:
+      - INITIAL
+      - PENDING
+      - SUCCESS
+      - FAIL
+      - CLOSE
+    UserInfo:
+      type: object
+      properties:
+        userId:
+          type: string
+        userName:
+          type: string
+        userEmail:
+          type: string
+        userMobile:
+          type: string
+    ApiEnvelope:
+      type: object
+      properties:
+        code:
+          type: string
+          example: '00000'
+        message:
+          type: string
+          example: SUCCESSFUL
   parameters:
     MerchantIdHeader:
       name: MerchantId
