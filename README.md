@@ -1,4 +1,4 @@
-# OPay (opay)
+# OPay
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,110 +66,106 @@
 
 OPay is a Nigerian mobile money and fintech super-app operated by Blue Ridge Microfinance Bank (OPay Digital Services Limited) and majority-owned by Opera Limited with backing from SoftBank Vision Fund 2, Sequoia China, DragonBall Capital, and 9F Group. Launched in 2018 and headquartered in Lagos, OPay serves tens of millions of Nigerian consumers, merchants, and agents with wallet accounts, free interbank transfers, the OPay Debit Card, OWealth (daily-interest savings powered by OPay Microfinance Bank), bill payments, airtime/data top-ups, BNPL (OBuy / OPay Easy Buy), and the OPay POS / agent banking network. For developers and merchants, OPay exposes the OPay Cashier / OPay Checkout API — a REST API for accepting payments via 3DS bank cards, bank transfer, USSD, bank account, POS, OPay wallet QR, and reference codes, with hosted Express Checkout, server-to-server APIs, callback webhooks, refund and query operations, a PHP gateway SDK, and a WooCommerce plugin. Sandbox and production environments are available at testapi.opaycheckout.com and liveapi.opaycheckout.com, with HMAC-SHA512 signature authentication and per-merchant public/private key pairs issued from the OPay merchant dashboard.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/opay/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/opay/refs/heads/main/apis.yml)
+**Areas:** Payments · Mobile Money · Fintech · Super App · Nigeria · Africa · Wallets · Savings · Buy Now Pay Later · Bank Transfers · Card Payments · USSD
 
-## Scope
+## OPay on APIs.io
 
-- **Type:** Index
-- **Position:** Provider
-- **Access:** 3rd-Party
+Everything profiled for OPay is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/opay/](https://apis.io/providers/opay/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (3)
 
-- Payments
-- Mobile Money
-- Fintech
-- Super App
-- Nigeria
-- Africa
-- Wallet
-- Savings
-- BNPL
-- Bank Transfer
-- Card Payments
-- USSD
-- Agent Banking
-- POS
-- Bill Payments
-- Airtime
-- Cashier
-- Checkout
-- Merchant Acquiring
+- [OPay Cashier API](https://apis.io/apis/opay/opay-cashier-api/) — The OPay Cashier API is the primary merchant payment API behind OPay Checkout. It exposes a hosted Express Checkout endpoint (cashier/create returning a…
+- [OPay Payments API](https://apis.io/apis/opay/opay-payments-api/) — Server-to-server payment creation across payment methods.
+- [OPay Refunds API](https://apis.io/apis/opay/opay-refunds-api/) — Refund creation and status.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-05-24
-- **Modified:** 2026-05-24
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### Agentic access (1)
 
-### OPay Cashier API
+Which operations an agent can call, which act, and which need a human in the loop.
 
-The OPay Cashier API is the primary merchant payment API behind OPay Checkout. It exposes a hosted Express Checkout endpoint (cashier/create returning a cashierUrl), server-to-server payment creation for 3DS bank cards, bank transfer, bank USSD, bank account, POS, OPay wallet QR, and reference code payments, plus status queries, cancel, refund, and refund-status operations. Authentication uses an Authorization Bearer token — the public key for cashier/create and an HMAC-SHA512 signature over the JSON body (signed with the merchant's private key) for all other endpoints — along with a MerchantId header.
+- [Opay Agentic Access](https://apis.io/agentic-access/opay/opay-agentic-access/)
 
-- **Human URL:** [https://documentation.opaycheckout.com/](https://documentation.opaycheckout.com/)
-- **Base URL:** `https://liveapi.opaycheckout.com/api/v1/international`
+#### Collections (3)
 
-#### Tags
+Postman and Open Collection request collections.
 
-- Payments
-- Cashier
-- Checkout
-- Cards
-- Bank Transfer
-- USSD
-- Wallet
-- Refunds
+- [OPay Cashier API](https://apis.io/collections/opay/open-opay-cashier-api/)
+- [OPay Cashier Payments API](https://apis.io/collections/opay/open-opay-payments-api/)
+- [OPay Cashier Refunds API](https://apis.io/collections/opay/open-opay-refunds-api/)
 
-#### Properties
+#### Security (2)
 
-- [Documentation](https://documentation.opaycheckout.com/)
-- [Getting Started](https://documentation.opaycheckout.com/getting-started)
-- [Authentication](https://documentation.opaycheckout.com/payment-authentication)
-- [API Reference](https://documentation.opaycheckout.com/server-apis-overview)
-- [Webhooks](https://documentation.opaycheckout.com/payment-notifications)
-- [Sandbox](https://testapi.opaycheckout.com/api/v1/international)
-- [Production](https://liveapi.opaycheckout.com/api/v1/international)
-- [Errors](https://documentation.opaycheckout.com/error-codes)
-- [Signature Calculator](https://documentation.opaycheckout.com/signature-calculator)
-- [OpenAPI](openapi/opay-cashier-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/opay-cashier-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/opay-cashier-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Authentication, trust centre, and vulnerability disclosure.
 
-## Common Properties
+- [Opay Authentication](https://apis.io/security/opay/opay-authentication/)
+- [Opay Domain Security](https://apis.io/security/opay/opay-domain-security/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.opayweb.com/)
-- [Portal](https://documentation.opaycheckout.com/)
 - [Documentation](https://documentation.opaycheckout.com/)
-- [Getting Started](https://documentation.opaycheckout.com/getting-started)
-- [API Reference](https://documentation.opaycheckout.com/server-apis-overview)
-- [Authentication](https://documentation.opaycheckout.com/payment-authentication)
-- [Webhooks](https://documentation.opaycheckout.com/payment-notifications)
-- [Errors](https://documentation.opaycheckout.com/error-codes)
-- [Sandbox](https://testapi.opaycheckout.com/api/v1/international)
-- [Sign Up](https://merchant.opaycheckout.com/register)
-- [Console](https://merchant.opaycheckout.com/login)
-- [Dashboard](https://merchant.opaycheckout.com/login)
+- [Getting started](https://documentation.opaycheckout.com/getting-started)
+- [API reference](https://documentation.opaycheckout.com/server-apis-overview)
 - [Support](https://support.opaycheckout.com/support/ticket)
-- [Business Solutions](https://opaybusiness.opayweb.com/)
-- [GitHub Organization](https://github.com/opay)
-- [SDK](https://github.com/opay/lib.gateway.php)
-- [Plugin](https://documentation.opaycheckout.com/woocommerce)
-- [Privacy Policy](https://www.opayweb.com/privacy-policy)
-- [Terms of Service](https://www.opayweb.com/terms-and-conditions)
-- [Twitter](https://twitter.com/OPay_NG)
-- [LinkedIn](https://www.linkedin.com/company/opayinc/)
-- [YouTube](https://www.youtube.com/@OPayNigeria)
-- [Facebook](https://www.facebook.com/OPayNigeria/)
-- [Instagram](https://www.instagram.com/opaynigeria/)
-- [App Store](https://apps.apple.com/ng/app/opay-mobile-money-app/id1500386156)
-- [Play Store](https://play.google.com/store/apps/details?id=team.opay.pay)
-- [Features](undefined)
-- [Use Cases](undefined)
-- [Integrations](undefined)
-- [Solutions](undefined)
+- [Blog](https://www.opayweb.com/newsroom/)
+- [Terms of service](https://www.opayweb.com/terms-and-conditions)
+- [Privacy policy](https://www.opayweb.com/privacy-policy)
+- [GitHub](https://github.com/opay)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 33.0** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 71.4 |
+| Contract quality | 50.1 |
+| Contract governance | 0.0 |
+| Operational transparency | 2.6 |
+| Developer ergonomics | 61.9 |
+| Access clarity | 13.2 |
+
+**Agent readiness 25.8** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | — |
+| Event Surface Described | unknown |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 10.7** — Payments
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/opay/](https://apis.io/providers/opay/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for OPay: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/opay/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
